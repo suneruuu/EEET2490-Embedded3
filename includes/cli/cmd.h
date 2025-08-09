@@ -9,7 +9,7 @@ typedef struct
 // List of available commands
 extern Command cmd_list[];
 
-void help_cmd(char *cmd);
+void help_cmd(char *cmd_name);
 void cls_cmd();
 void show_info_cmd();
 void baudrate_cmd(char *arg);
