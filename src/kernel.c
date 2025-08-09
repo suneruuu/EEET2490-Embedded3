@@ -1,10 +1,13 @@
-void main() {
-    // uart_init()
-    // display_welcome_msg()
+#include "includes/utils/color.h"
 
-    while(1) {
+void main() {
+    // uart_init();
+    // display_welcome_msg();
+    // print_color("Hello in red!", RED);
+
+    // while(1) {
         
-    }
+    // }
 
     return 0;
 }
