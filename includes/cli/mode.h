@@ -2,6 +2,10 @@
 
 typedef enum {
     MODE_CLI,
+    MODE_VID,
+    MODE_TEXT,
+    MODE_GAME,
+    MODE_IMG,
 } Mode;
 
 /* ---- Mode checks ---- */

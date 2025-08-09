@@ -4,28 +4,23 @@ static Mode current_mode = MODE_CLI;
 
 /* ---- Mode checks ---- */
 int is_cli_mode(void) {
-    // TODO: return 1 if current mode is CLI, else 0
-    return 0;
+    return current_mode == MODE_CLI ? 1 : 0;
 }
 
 int is_vid_mode(void) {
-    // TODO: return 1 if current mode is Video, else 0
-    return 0;
+    return current_mode == MODE_VID ? 1 : 0;
 }
 
 int is_text_mode(void) {
-    // TODO: return 1 if current mode is Text, else 0
-    return 0;
+return current_mode == MODE_TEXT ? 1 : 0;
 }
 
 int is_game_mode(void) {
-    // TODO: return 1 if current mode is Game, else 0
-    return 0;
+return current_mode == MODE_GAME ? 1 : 0;
 }
 
 int is_img_mode(void) {
-    // TODO: return 1 if current mode is Image, else 0
-    return 0;
+return current_mode == MODE_IMG ? 1 : 0;
 }
 
 /* ---- Mode handlers ---- */
@@ -51,21 +46,21 @@ void handle_img_mode(void) {
 
 /* ---- Mode changing ---- */
 void chmod_to_cli_mode(void) {
-    // TODO: set current mode to CLI
+    current_mode = MODE_CLI;
 }
 
 void chmod_to_vid_mode(void) {
-    // TODO: set current mode to Video
+    current_mode = MODE_VID;
 }
 
 void chmod_to_text_mode(void) {
-    // TODO: set current mode to Text
+    current_mode = MODE_TEXT;
 }
 
 void chmod_to_game_mode(void) {
-    // TODO: set current mode to Game
+    current_mode = MODE_GAME;
 }
 
 void chmod_to_img_mode(void) {
-    // TODO: set current mode to Image
+    current_mode = MODE_IMG;
 }
