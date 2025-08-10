@@ -46,3 +46,11 @@ void print_handshake_guide() {
     print_color("Allow the user to turn on/off CTS/RTS handshaking on current UART if possible.\n", WHITE);
     uart_puts("\n");
 }
+
+void print_cmd_not_found() {
+    print_color("COMMAND NOT FOUND!\n", RED);
+    print_color("There are a list of available command\nType ", WHITE);
+    print_color("help ", YELLOW);
+    print_color("for an overview of the system", WHITE);
+    uart_puts("\n");
+}

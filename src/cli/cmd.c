@@ -15,14 +15,25 @@ void help_cmd(char *cmd_name) { // <blank> | <cmd_name>
     uart_puts("\n");
 
     // list all
-    if (strcmp(cmd_name, "") == 0) {
+    if (strcmp(cmd_name, "") == 0) { // <blank> case
         print_help_guide();
         print_cls_guide();
         print_show_info_guide();
         print_baudrate_guide();
         print_handshake_guide();
-    } else {
-        /* TODO*/
+    } else { // <cmd_name> case
+        if (strcmp(cmd_name, "help") == 0)
+            print_help_guide();
+        else if (strcmp(cmd_name, "clear") == 0)
+            print_cls_guide();
+        else if (strcmp(cmd_name, "showinfo") == 0) 
+            print_show_info_guide();
+        else if (strcmp(cmd_name, "baudrate") == 0)
+            print_baudrate_guide();
+        else if (strcmp(cmd_name, "handshake") == 0)
+            print_handshake_guide();
+        else 
+            print_error_not_found();
     }
 }
 
