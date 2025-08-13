@@ -8,14 +8,14 @@ all: clean uart1_build kernel8.img run1
 uart1: clean uart1_build kernel8.img run1
 uart0: clean uart0_build kernel8.img run0
 
-#./build/uart.o: ./utils/uart1.c
+#./build/uart.o: ./library/uart1.c
 #	aarch64-none-elf-gcc $(GCCFLAGS) -c ./uart/uart1.c -o ./build/uart.o
 
-uart1_build: ./utils/uart1.c
-	aarch64-none-elf-gcc $(GCCFLAGS) -c ./utils/uart1.c -o ./build/uart.o
+uart1_build: ./library/uart1.c
+	aarch64-none-elf-gcc $(GCCFLAGS) -c ./library/uart1.c -o ./build/uart.o
 
-uart0_build: ./utils/uart0.c
-	aarch64-none-elf-gcc $(GCCFLAGS) -c ./utils/uart0.c -o ./build/uart.o
+uart0_build: ./library/uart0.c
+	aarch64-none-elf-gcc $(GCCFLAGS) -c ./library/uart0.c -o ./build/uart.o
 
 ./build/boot.o: ./src/boot.S
 	aarch64-none-elf-gcc $(GCCFLAGS) -c ./src/boot.S -o ./build/boot.o

@@ -1,5 +1,5 @@
-#include "..\library\uart1.h"
-#include "..\library\mbox.h"
+#include "..\includes\uart1.h"
+#include "..\includes\mbox.h"
 
 /**
  * Set baud rate and characteristics (115200 8N1) and map to GPIO

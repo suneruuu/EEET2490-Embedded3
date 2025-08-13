@@ -1,7 +1,7 @@
 // ----------------------------------- framebf.c -------------------------------------
-#include "..\library\mbox.h"
-#include "..\library\uart1.h"
-#include "..\library\uart0.h"
+#include "..\includes\mbox.h"
+#include "..\includes\uart1.h"
+#include "..\includes\uart0.h"
 //Use RGBA32 (32 bits for each pixel)
 #define COLOR_DEPTH 32
 //Pixel Order: BGR in memory order (little endian --> RGB in byte order)
