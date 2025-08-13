@@ -1,3 +1,4 @@
+#pragma once
 #include "gpio.h"
 /* a properly aligned buffer */
 extern volatile unsigned int mBuf[36];
