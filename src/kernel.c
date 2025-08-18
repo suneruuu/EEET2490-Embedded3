@@ -37,7 +37,7 @@ uart_init();
 // say hello
 uart_puts(Welcome_msg);                                                             
 // Initialize frame buffer
-//framebf_init();
+framebf_init();
 // Draw something on the screen
 // drawRectARGB32(100,100,400,400,0x00AA0000,1); //RED
 // drawRectARGB32(150,150,400,400,0x0000BB00,1); //GREEN
@@ -49,6 +49,7 @@ uart_puts(Welcome_msg);
 // drawLineARGB32(420, 100, 800, 0x00F7A189);
 // drawCircleARGB32(300, 500, 100, 0x00AA0000, 1);
 // drawPixelARGB32(300, 300, 0x00FF0000); //RED
+drawString(300, 300, "Hello, Hello, Hello, Hello, and Hello ", 0x00FF8C00, 2);
 // echo everything back
 while(1) {
     //read each char

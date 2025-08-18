@@ -6,3 +6,5 @@ void drawRectARGB32(int x1, int y1, int x2, int y2, unsigned int attr, int fill)
 void drawLineARGB32(int y, int x1, int x2, unsigned int attr);
 void drawCircleARGB32(int x1, int y1, int r, unsigned int attr, int fill);
 int check(int px, int py, int x, int y, int r);
+void drawString(int x, int y, char *str, unsigned int attr, int zoom);
+void drawChar(unsigned char ch, int x, int y, unsigned int attr, int zoom);
