@@ -19,3 +19,4 @@ void uart_init();
 void uart_sendc(char c);
 char uart_getc();
 void uart_puts(char *s);
+void uart_set_baudrate(unsigned int baud);
