@@ -1,8 +1,8 @@
 #include "includes/cli/cmd.h"
 #include "includes/utils/color.h"
-#include "includes/cli/cmd.h"
 #include "includes/cli/print_cmd.h"
 #include "includes/utils/string.h"
+#include "includes/peripheral/uart0.h"
 
 Command cmd_list[] = {
     {"help", help_cmd},

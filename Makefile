@@ -1,3 +1,24 @@
+# Detect OS and shell environment
+ifeq ($(OS),Windows_NT)
+    # Check if we're in Git Bash by checking if rm command works
+    ifeq ($(shell which rm 2>/dev/null),)
+        # Windows Command Prompt (no rm command)
+        RM = del /Q
+        MKDIR = if not exist "$(@D)" mkdir "$(@D)" 2>nul
+        CLEAN_CMD = del /Q .\build\kernel8.elf .\build\*.o .\build\*.img 2>nul || echo Clean completed
+    else
+        # Git Bash on Windows (rm command available)
+        RM = rm -f
+        MKDIR = mkdir -p $(@D)
+        CLEAN_CMD = rm -f ./build/kernel8.elf ./build/*.o ./build/*.img 2>/dev/null || true
+    endif
+else
+    # Unix/Linux/Git Bash
+    RM = rm -f
+    MKDIR = mkdir -p $(@D)
+    CLEAN_CMD = rm -f ./build/kernel8.elf ./build/*.o ./build/*.img 2>/dev/null || true
+endif
+
 SRC_CFILES = $(wildcard ./src/*.c) $(wildcard ./src/*/*.c)
 UTILS_CFILES = $(wildcard ./utils/*.c)
 
@@ -24,11 +45,11 @@ uart0_build: ./library/peripheral/uart0.c
 	aarch64-none-elf-gcc $(GCCFLAGS) -c ./src/boot.S -o ./build/boot.o
 
 ./build/%.o: ./src/%.c
-	@mkdir -p $(@D)
+	@$(MKDIR)
 	aarch64-none-elf-gcc $(GCCFLAGS) -c $< -o $@
 
 ./build/utils/%.o: ./utils/%.c
-	@mkdir -p $(@D)
+	@$(MKDIR)
 	aarch64-none-elf-gcc $(GCCFLAGS) -c $< -o $@
 
 kernel8.img: ./build/boot.o ./build/uart.o $(OFILES)
@@ -36,7 +57,7 @@ kernel8.img: ./build/boot.o ./build/uart.o $(OFILES)
 	aarch64-none-elf-objcopy -O binary ./build/kernel8.elf ./build/kernel8.img
 
 clean:
-	rm -f ./build/kernel8.elf ./build/*.o ./build/*.img
+	$(CLEAN_CMD)
 
 # Run emulation with QEMU
 run1: 
