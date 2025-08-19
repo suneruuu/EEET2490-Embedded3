@@ -2,6 +2,7 @@
 #include "..\includes\mbox.h"
 #include "..\includes\uart1.h"
 #include "..\includes\uart0.h"
+
 //Use RGBA32 (32 bits for each pixel)
 #define COLOR_DEPTH 32
 //Pixel Order: BGR in memory order (little endian --> RGB in byte order)
@@ -21,13 +22,13 @@ void framebf_init()
  mBuf[2] = MBOX_TAG_SETPHYWH; //Set physical width-height
  mBuf[3] = 8; // Value size in bytes
  mBuf[4] = 0; // REQUEST CODE = 0
- mBuf[5] = 1024; // Value(width)
- mBuf[6] = 768; // Value(height)
+ mBuf[5] = 1440; // Value(width)
+ mBuf[6] = 1080; // Value(height)
  mBuf[7] = MBOX_TAG_SETVIRTWH; //Set virtual width-height
  mBuf[8] = 8;
  mBuf[9] = 0;
- mBuf[10] = 1024;
- mBuf[11] = 768;
+ mBuf[10] = 1440;
+ mBuf[11] = 1080;
  mBuf[12] = MBOX_TAG_SETVIRTOFF; //Set virtual offset
  mBuf[13] = 8;
  mBuf[14] = 0;
@@ -120,6 +121,27 @@ void drawCircleARGB32(int x1, int y1, int r, unsigned int attr, int fill)
     else if (fill)
     drawPixelARGB32(x, y, attr);
 }
+}
+
+void drawImage(const unsigned long* image_data, int start_x, int start_y, int width, int height) {
+    // Check for a null pointer to prevent crashes
+    if (!image_data) {
+        return;
+    }
+
+    unsigned long pixel_index = 0;
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            // Get the color and cast it to the required unsigned int type
+            unsigned int color = (unsigned int)image_data[pixel_index];
+            
+            // Optional: Force opaque alpha if necessary
+            // color |= 0xFF000000;
+
+            drawPixelARGB32(start_x + x, start_y + y, color);
+            pixel_index++;
+        }
+    }
 }
 
 
