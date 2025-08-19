@@ -25,4 +25,4 @@
 // Reset all attributes
 #define COLOR_RESET "\033[0m"
 
-void print_color(char *str, char *color);
+void print_color(const char *str, const char *color);

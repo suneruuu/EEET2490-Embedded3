@@ -1,5 +1,6 @@
 #include "includes/peripheral/uart1.h"
 
+
 /**
  * Set baud rate and characteristics and map to GPIO
  */

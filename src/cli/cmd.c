@@ -2,6 +2,7 @@
 #include "includes/utils/color.h"
 #include "includes/cli/cmd.h"
 #include "includes/cli/print_cmd.h"
+#include "includes/utils/string.h"
 
 Command cmd_list[] = {
     {"help", help_cmd},
@@ -33,7 +34,7 @@ void help_cmd(char *cmd_name) { // <blank> | <cmd_name>
         else if (strcmp(cmd_name, "handshake") == 0)
             print_handshake_guide();
         else 
-            print_error_not_found();
+            print_cmd_not_found();
     }
 }
 
