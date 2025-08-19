@@ -48,7 +48,7 @@ void cls_cmd(char* unused) { // clear scr
 
 void show_info_cmd(char *unused) {
     uart_puts("Board Revision: check this later\n");
-    uart_puts("Window Address: check this later\n");
+    uart_puts("MAC Address: check this later\n");
 }
 
 void baudrate_cmd(char *cnum) {
