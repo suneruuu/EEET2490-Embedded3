@@ -20,11 +20,15 @@ else
 endif
 
 SRC_CFILES = $(wildcard ./src/*.c) $(wildcard ./src/*/*.c)
+LIB_CFILES = $(wildcard ./library/*.c) $(wildcard ./library/*/*.c)
+# Avoid duplicate symbols and double-compiled UARTs
+LIB_CFILES := $(filter-out ./library/peripheral/uart0.c ./library/peripheral/uart1.c ./library/framebf.c,$(LIB_CFILES))
 UTILS_CFILES = $(wildcard ./utils/*.c)
 
 SRC_OFILES = $(SRC_CFILES:./src/%.c=./build/%.o)
+LIB_OFILES = $(LIB_CFILES:./library/%.c=./build/library/%.o)
 UTILS_OFILES = $(UTILS_CFILES:./utils/%.c=./build/utils/%.o)
-OFILES = $(SRC_OFILES) $(UTILS_OFILES)
+OFILES = $(SRC_OFILES) $(LIB_OFILES) $(UTILS_OFILES)
 
 GCCFLAGS = -Wall -O2 -ffreestanding -nostdinc -nostdlib -MMD -MP -I.
 
@@ -45,6 +49,10 @@ uart0_build: ./library/peripheral/uart0.c
 	aarch64-none-elf-gcc $(GCCFLAGS) -c ./src/boot.S -o ./build/boot.o
 
 ./build/%.o: ./src/%.c
+	@$(MKDIR)
+	aarch64-none-elf-gcc $(GCCFLAGS) -c $< -o $@
+
+./build/library/%.o: ./library/%.c
 	@$(MKDIR)
 	aarch64-none-elf-gcc $(GCCFLAGS) -c $< -o $@
 

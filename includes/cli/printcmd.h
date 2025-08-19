@@ -1,6 +1,7 @@
 #pragma once
 
 void print_usage(char *command);
+void print_prompt(void);
 
 /* Help sections */
 void print_help_guide(void);

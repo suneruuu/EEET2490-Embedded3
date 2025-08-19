@@ -1,5 +1,6 @@
 #include "includes/utils/color.h"
 #include "includes/peripheral/uart1.h" 
+#include "includes/cli/mode.h"
 
 
 void display_welcome_msg(void) {
@@ -32,6 +33,6 @@ void main() {
     uart_init();
     display_welcome_msg();
     print_color("Hello in red!\n", RED);
-    for (;;) {}
-
+    chmod_to_cli_mode();
+    handle_cli_mode();
 }

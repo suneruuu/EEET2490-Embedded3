@@ -2,18 +2,23 @@
 #include "includes/utils/color.h"
 #include "includes/cli/printcmd.h"
 #include "includes/utils/string.h"
+#include "includes/peripheral/uart0.h"
+#include "includes/peripheral/uart1.h"
 
 #define CMD_LIST_SIZE (sizeof(cmd_list) / sizeof(Command))
-#include "includes/utils/string.h"
-#include "includes/peripheral/uart0.h"
 
 Command cmd_list[] = {
     {"help", help_cmd},
     {"clear", cls_cmd}, 
     {"showinfo", show_info_cmd},
     {"baudrate", baudrate_cmd},
-    // {"handshake", handshake_cmd}, // in uart
+    {"handshake", handshake_cmd},
 };
+
+void get_command_table(const Command **table, unsigned *count) {
+    if (table) *table = cmd_list;
+    if (count) *count = (unsigned)CMD_LIST_SIZE;
+}
 
 void help_cmd(char *cmd_name) { // <blank> | <cmd_name>
     uart_puts("\n");
@@ -67,6 +72,19 @@ void baudrate_cmd(char *cnum) {
         default:
             uart_puts("Only support baudrate 9600, 19200, 38400, 57600, or 11520. Try again.\n");
             break;
+    }
+}
+
+void handshake_cmd(char *arg) {
+    // Syntax: handshake on | off
+    if (strcmp(arg, "on") == 0) {
+        uart_set_handshake(1);
+        uart_puts("Handshake enabled (CTS/RTS)\n");
+    } else if (strcmp(arg, "off") == 0) {
+        uart_set_handshake(0);
+        uart_puts("Handshake disabled\n");
+    } else {
+        uart_puts("Usage: handshake on|off\n");
     }
 }
 

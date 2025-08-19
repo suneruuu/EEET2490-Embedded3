@@ -166,3 +166,18 @@ void uart_set_baudrate(unsigned int baud)
     AUX_MU_BAUD = baud_reg;
     AUX_MU_CNTL = 3; // re-enable
 }
+
+/**
+ * Set Handshake
+ */
+void uart_set_handshake(int enabled) {
+    // uart1 not support CTSEN/RTSEN like uart0. Auto flow-control using RTS/
+    // When enabled, assert RTS flow control; when disabled, deassert.
+    // docs: BCM2711 ARM Peripherals p.13-14 | BCM2835 ARM Peripherals p.14
+    // work for both RPI3 and RP4 
+    if (enabled) {
+        AUX_MU_MCR |= 0b10;  // assert RTS
+    } else {
+        AUX_MU_MCR &= ~0b10; // deassert RTS
+    }
+}

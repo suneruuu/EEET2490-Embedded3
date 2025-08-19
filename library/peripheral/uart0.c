@@ -199,3 +199,16 @@ void uart_set_baudrate(unsigned int baud) {
 	UART0_LCRH = UART0_LCRH_FEN | UART0_LCRH_WLEN_8BIT;
 	UART0_CR = 0x301;
 }
+
+/**
+ * Set Handshake
+ */
+void uart_set_handshake(int enabled) {
+    unsigned int cr = UART0_CR;
+    if (enabled) {
+        cr |= UART0_CR_CTSEN | UART0_CR_RTSEN; // enable CTS, RTS
+    } else {
+        cr &= ~(UART0_CR_CTSEN | UART0_CR_RTSEN); // disable CTS, RTS
+    }
+    UART0_CR = cr;
+}
