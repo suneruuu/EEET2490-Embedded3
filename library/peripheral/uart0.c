@@ -109,3 +109,27 @@ void uart_puts(char *s) {
         uart_sendc(*s++);
     }
 }
+
+/**
+ * Set Baudrate
+ */
+void uart_set_baudrate(unsigned int baud){
+	unsigned int divider;
+	unsigned int intpart, fracpart;
+	if(baud == 0){
+		return;
+	}
+	//Divider = UART_CLOCK / (16 * Baud)
+	//By default, UART_CLOCK = 48 MHz
+	divider = (48000000) / (16 * baud);
+	intpart = divider;
+	fracpart = ((48000000 % (16 * baud)) * 64 + baud/2) / baud;
+
+	UART0_CR = 0; //Disable UART0 before changing baud
+	UART0_IBRD = intpart;
+	UART0_FBRD = fracpart;
+
+	//Re-enable UART with 8-bit word length, FIFO, Rx, Tx
+	UART0_LCRH = UART0_LCRH_FEN | UART0_LCRH_WLEN_8BIT;
+	UART0_CR = 0x301;
+}

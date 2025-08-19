@@ -92,3 +92,19 @@ void uart_puts(char *s) {
         uart_sendc(*s++);
     }
 }
+
+/**
+ * Set Baudrate
+ */
+void uart_set_baudrate(unsigned int baud){
+    if(baud == 0){
+        return;
+    }
+    //AUX_MU_BAUD = (system_clk / (baud * 8)) - 1
+    //By default, system_clk = 250 MHz
+    unsigned int baud_reg = (25000000 / (baud * 8)) - 1;
+
+    AUX_MU_CNTL = 0; //Disable Tx, Rx while changing baud
+    AUX_MU_BAUD = baud_reg;
+    AUX_MU_CNTL = 3; //re-enable
+}
