@@ -42,15 +42,33 @@ void help_cmd(char *cmd_name) { // <blank> | <cmd_name>
 }
 
 void cls_cmd(char* unused) { // clear scr
-
+    uart_puts("\033[2J\033[H"); //use ANSI escape sequence: \033[2J -> erase screen, \033[H -> move cursor to top-left
+    uart_puts("MyOS> "); //reprint prompt
 }
 
 void show_info_cmd(char *unused) {
-
+    uart_puts("Board Revision: check this later\n");
+    uart_puts("Window Address: check this later\n");
 }
 
 void baudrate_cmd(char *cnum) {
-
+    int baud = atoi(cnum); //change this string to number
+    switch(baud){
+        case 9600:
+        case 19200:
+        case 38400:
+        case 57600:
+        case 115200:
+            uart_set_baudrate(baud);
+            uart_puts("Baudrate changed to ");
+            char buffer[16];
+            sprintf(buffer, "%d\n", baud);
+            uart_puts(buffer);
+            break;
+        default:
+            uart_puts("Please use 9600, 19200, 38400, 57600, or 11520 Baudrate.\n");
+            break;
+    }
 }
 
 void execute_cmd(const char* input){
