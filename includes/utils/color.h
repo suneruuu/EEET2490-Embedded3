@@ -22,10 +22,6 @@
 #define HI_CYAN "\033[96m"
 #define HI_WHITE "\033[97m"
 
-// Common alias for grey/gray (bright black)
-#define GREY HI_BLACK
-#define GRAY HI_BLACK
-
 // Reset all attributes
 #define COLOR_RESET "\033[0m"
 
