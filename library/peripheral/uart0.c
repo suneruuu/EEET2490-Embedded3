@@ -1,5 +1,5 @@
-#include "..\includes\uart0.h"
-#include "..\includes\mbox.h"
+#include "includes/peripheral/uart0.h"
+#include "includes/mbox.h"
 
 
 /**
@@ -153,21 +153,20 @@ void uart_hex(unsigned int num) {
 **
 * Display a value in decimal format
 */
-void uart_dec(int num)
-{
+void uart_dec(int num) {
 	//A string to store the digit characters
 	char str[33] = "";
 
 	//Calculate the number of digits
 	int len = 1;
 	int temp = num;
-	while (temp >= 10){
+	while (temp >= 10) {
 		len++;
 		temp = temp / 10;
 	}
 
 	//Store into the string and print out
-	for (int i = 0; i < len; i++){
+	for (int i = 0; i < len; i++) {
 		int digit = num % 10; //get last digit
 		num = num / 10; //remove last digit from the number
 		str[len - (i + 1)] = digit + '0';
@@ -175,4 +174,41 @@ void uart_dec(int num)
 	str[len] = '\0';
 
 	uart_puts(str);
+}
+
+/**
+ * Set Baudrate
+ */
+void uart_set_baudrate(unsigned int baud) {
+	unsigned int divider;
+	unsigned int intpart, fracpart;
+	if(baud == 0){
+		return;
+	}
+	//Divider = UART_CLOCK / (16 * Baud)
+	//By default, UART_CLOCK = 48 MHz
+	divider = (48000000) / (16 * baud);
+	intpart = divider;
+	fracpart = ((48000000 % (16 * baud)) * 64 + baud/2) / baud;
+
+	UART0_CR = 0; //Disable UART0 before changing baud
+	UART0_IBRD = intpart;
+	UART0_FBRD = fracpart;
+
+	//Re-enable UART with 8-bit word length, FIFO, Rx, Tx
+	UART0_LCRH = UART0_LCRH_FEN | UART0_LCRH_WLEN_8BIT;
+	UART0_CR = 0x301;
+}
+
+/**
+ * Set Handshake
+ */
+void uart_set_handshake(int enabled) {
+    unsigned int cr = UART0_CR;
+    if (enabled) {
+        cr |= UART0_CR_CTSEN | UART0_CR_RTSEN; // enable CTS, RTS
+    } else {
+        cr &= ~(UART0_CR_CTSEN | UART0_CR_RTSEN); // disable CTS, RTS
+    }
+    UART0_CR = cr;
 }

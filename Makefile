@@ -1,38 +1,83 @@
-#--------------------------------------Makefile-------------------------------------
+# Detect OS and shell environment
+ifeq ($(OS),Windows_NT)
+    # Check if we're in Git Bash by checking if rm command works
+    ifeq ($(shell which rm 2>/dev/null),)
+        # Windows Command Prompt (no rm command)
+        RM = del /Q
+        MKDIR = if not exist "$(@D)" mkdir "$(@D)" 2>nul
+        CLEAN_CMD = del /Q .\build\kernel8.elf .\build\*.o .\build\*.img 2>nul || echo Clean completed
+    else
+        # Git Bash on Windows (rm command available)
+        RM = rm -f
+        MKDIR = mkdir -p $(@D)
+        CLEAN_CMD = rm -f ./build/kernel8.elf ./build/*.o ./build/*.img 2>/dev/null || true
+    endif
+else
+    # Unix/Linux/Git Bash
+    RM = rm -f
+    MKDIR = mkdir -p $(@D)
+    CLEAN_CMD = rm -f ./build/kernel8.elf ./build/*.o ./build/*.img 2>/dev/null || true
+endif
 
-CFILES = $(wildcard ./src/*.c)
-OFILES = $(CFILES:./src/%.c=./build/%.o)
-GCCFLAGS = -Wall -O2 -ffreestanding -nostdinc -nostdlib
+# Toolchain
+CC = aarch64-none-elf-gcc
+LD = aarch64-none-elf-ld
+OBJCOPY = aarch64-none-elf-objcopy
 
-all: clean uart1_build kernel8.img run1
-uart1: clean uart1_build kernel8.img run1
-uart0: clean uart0_build kernel8.img run0
+SRC_CFILES = $(wildcard ./src/*.c) $(wildcard ./src/*/*.c)
+LIB_CFILES = $(wildcard ./library/*.c) $(wildcard ./library/*/*.c)
+# Avoid duplicate symbols and double-compiled UARTs
+LIB_CFILES := $(filter-out ./library/peripheral/uart0.c ./library/peripheral/uart1.c,$(LIB_CFILES))
+UTILS_CFILES = $(wildcard ./utils/*.c)
 
-#./build/uart.o: ./library/uart1.c
-#	aarch64-none-elf-gcc $(GCCFLAGS) -c ./uart/uart1.c -o ./build/uart.o
+SRC_OFILES = $(SRC_CFILES:./src/%.c=./build/%.o)
+LIB_OFILES = $(LIB_CFILES:./library/%.c=./build/library/%.o)
+UTILS_OFILES = $(UTILS_CFILES:./utils/%.c=./build/utils/%.o)
+OFILES = $(SRC_OFILES) $(LIB_OFILES) $(UTILS_OFILES)
 
-uart1_build: ./library/uart1.c
-	aarch64-none-elf-gcc $(GCCFLAGS) -c ./library/uart1.c -o ./build/uart.o
+GCCFLAGS = -Wall -O2 -ffreestanding -nostdinc -nostdlib -MMD -MP -I.
 
-uart0_build: ./library/uart0.c
-	aarch64-none-elf-gcc $(GCCFLAGS) -c ./library/uart0.c -o ./build/uart.o
+all:
+	"$(MAKE)" clean
+	"$(MAKE)" uart1_build
+	"$(MAKE)" kernel8.img
+	"$(MAKE)" run1
+uart1: uart1_build kernel8.img run1
+uart0: uart0_build kernel8.img run0
+
+uart1_build: ./library/peripheral/uart1.c
+	$(CC) $(GCCFLAGS) -c ./library/peripheral/uart1.c -o ./build/uart.o
+
+uart0_build: ./library/peripheral/uart0.c
+	$(CC) $(GCCFLAGS) -c ./library/peripheral/uart0.c -o ./build/uart.o
 
 ./build/boot.o: ./src/boot.S
-	aarch64-none-elf-gcc $(GCCFLAGS) -c ./src/boot.S -o ./build/boot.o
+	$(CC) $(GCCFLAGS) -c ./src/boot.S -o ./build/boot.o
 
 ./build/%.o: ./src/%.c
-	aarch64-none-elf-gcc $(GCCFLAGS) -c $< -o $@
+	@$(MKDIR)
+	$(CC) $(GCCFLAGS) -c $< -o $@
+
+./build/library/%.o: ./library/%.c
+	@$(MKDIR)
+	$(CC) $(GCCFLAGS) -c $< -o $@
+
+./build/utils/%.o: ./utils/%.c
+	@$(MKDIR)
+	$(CC) $(GCCFLAGS) -c $< -o $@
 
 kernel8.img: ./build/boot.o ./build/uart.o $(OFILES)
-	aarch64-none-elf-ld -nostdlib ./build/boot.o ./build/uart.o $(OFILES) -T ./src/link.ld -o ./build/kernel8.elf
-	aarch64-none-elf-objcopy -O binary ./build/kernel8.elf ./build/kernel8.img
+	$(LD) -nostdlib ./build/boot.o ./build/uart.o $(OFILES) -T ./src/link.ld -o ./build/kernel8.elf
+	$(OBJCOPY) -O binary ./build/kernel8.elf ./build/kernel8.img
 
 clean:
-	del .\build\kernel8.elf .\build\*.o .\build\*.img
+	$(CLEAN_CMD)
 
 # Run emulation with QEMU
-run1: 
-	qemu-system-aarch64 -M raspi3 -kernel .\build\kernel8.img -serial null -serial stdio
+run1: kernel8.img
+	qemu-system-aarch64 -M raspi3 -kernel ./build/kernel8.img -serial null -serial stdio
 
-run0: 
-	qemu-system-aarch64 -M raspi3 -kernel .\build\kernel8.img -serial stdio
+run0: kernel8.img
+	qemu-system-aarch64 -M raspi3 -kernel ./build/kernel8.img -serial stdio
+
+.PHONY: all uart1 uart0 uart1_build uart0_build clean run1 run0

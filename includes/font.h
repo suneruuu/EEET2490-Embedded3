@@ -1,4 +1,5 @@
 #pragma once
+
 enum {
     FONT_WIDTH     = 8,  // Width in pixels
     FONT_HEIGHT    = 8,  // Height in pixel

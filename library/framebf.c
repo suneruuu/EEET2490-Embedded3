@@ -1,8 +1,7 @@
 // ----------------------------------- framebf.c -------------------------------------
-#include "..\includes\mbox.h"
-#include "..\includes\uart1.h"
-#include "..\includes\uart0.h"
-#include "..\includes\font.h"
+#include "includes/mbox.h"
+#include "includes/peripheral/uart1.h"
+#include "includes/peripheral/uart0.h"
 
 //Use RGBA32 (32 bits for each pixel)
 #define COLOR_DEPTH 32
@@ -55,9 +54,9 @@ void framebf_init()
  mBuf[34] = MBOX_TAG_LAST;
  // Call Mailbox
  if (mbox_call(ADDR(mBuf), MBOX_CH_PROP) //mailbox call is successful ?
- && mBuf[20] == COLOR_DEPTH //got correct color depth ?
-&& mBuf[24] == PIXEL_ORDER //got correct pixel order ?
-&& mBuf[28] != 0 //got a valid address for frame buffer ?
+    && mBuf[20] == COLOR_DEPTH //got correct color depth ?
+    && mBuf[24] == PIXEL_ORDER //got correct pixel order ?
+    && mBuf[28] != 0 //got a valid address for frame buffer ?
 ) {
  /* Convert GPU address to ARM address (clear higher address bits)
  * Frame Buffer is located in RAM memory, which VideoCore MMU
@@ -68,18 +67,18 @@ void framebf_init()
  mBuf[28] &= 0x3FFFFFFF;
  // Access frame buffer as 1 byte per each address
  fb = (unsigned char *)((unsigned long)mBuf[28]);
- uart_puts("Got allocated Frame Buffer at RAM physical address: ");
- uart_hex(mBuf[28]);
- uart_puts("\n");
- uart_puts("Frame Buffer Size (bytes): ");
- uart_dec(mBuf[29]);
- uart_puts("\n");
- width = mBuf[5]; // Actual physical width
- height = mBuf[6]; // Actual physical height
- pitch = mBuf[33]; // Number of bytes per line
- } else {
- uart_puts("Unable to get a frame buffer with provided setting\n");
-  }
+//  uart_puts("Got allocated Frame Buffer at RAM physical address: ");
+//  uart_hex(mBuf[28]);
+//  uart_puts("\n");
+//  uart_puts("Frame Buffer Size (bytes): ");
+//  uart_dec(mBuf[29]);
+//  uart_puts("\n");
+    width = mBuf[5]; // Actual physical width
+    height = mBuf[6]; // Actual physical height
+    pitch = mBuf[33]; // Number of bytes per line
+} else {
+// uart_puts("Unable to get a frame buffer with provided setting\n");
+}
 }
 void drawPixelARGB32(int x, int y, unsigned int attr)
 {
@@ -145,39 +144,14 @@ void drawImage(const unsigned long* image_data, int start_x, int start_y, int wi
     }
 }
 
-/* Functions to display text on the screen */
-
-void drawChar(unsigned char ch, int x, int y, unsigned int attr, int zoom)
+void framebf_clear(void)
 {
-    unsigned char *glyph = (unsigned char *)&font + (ch < FONT_NUMGLYPHS ? ch : 0) * FONT_BPG;
-
-    for (int i = 1; i <= (FONT_HEIGHT*zoom); i++) {
-		for (int j = 0; j< (FONT_WIDTH*zoom); j++) {
-			unsigned char mask = 1 << (j/zoom);
-            if (*glyph & mask) { //only draw pixels belong to the character glyph
-			    drawPixelARGB32(x + j, y + i, attr);
-            }
-		}
-		glyph += (i % zoom) ? 0 : FONT_BPL;
-    }
-}
-
-
-void drawString(int x, int y, char *str, unsigned int attr, int zoom)
-{
-    while (*str) {
-        if (*str == '\r') {
-            x = 0;
-        } else if (*str == '\n') {
-            x = 0; 
-			y += (FONT_HEIGHT*zoom);
-        } else {
-            drawChar(*str, x, y, attr, zoom);
-            x += (FONT_WIDTH*zoom);
+    for (unsigned int y = 0; y < height; y++) {
+        unsigned int *row = (unsigned int *)(fb + y * pitch);
+        for (unsigned int x = 0; x < width; x++) {
+            row[x] = 0x00000000;
         }
-        str++;
     }
 }
 
-
-
+ 
