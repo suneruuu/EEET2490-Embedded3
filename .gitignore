@@ -1,4 +1,9 @@
 .vscode/
 .idea/
 *.o
+*.d
+*.elf
 *.img
+/build/
+/build/**
+/build/**/**

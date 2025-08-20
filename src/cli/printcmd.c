@@ -33,7 +33,7 @@ void print_cls_guide(void) {
 
 void print_show_info_guide(void) {
     print_usage("showinfo");
-    print_color("show_info\n", YELLOW);
+    print_color("showinfo\n", YELLOW);
     print_color("Show board revision (value and information) and board MAC address in correct format\n", WHITE);
     uart_puts("\n");
 }

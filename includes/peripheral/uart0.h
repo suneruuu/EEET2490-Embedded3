@@ -156,3 +156,5 @@ char uart_getc();
 void uart_puts(char *s);
 void uart_set_baudrate(unsigned int baud);
 void uart_set_handshake(int enabled);
+void uart_hex(unsigned int num);
+void uart_dec(int num);

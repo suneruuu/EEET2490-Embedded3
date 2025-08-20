@@ -4,6 +4,7 @@
 #include "includes/cli/printcmd.h"
 #include "includes/utils/keystroke.h"
 #include "includes/peripheral/uart0.h"
+#include "includes/utils/color.h"
 
 static Mode current_mode = MODE_CLI;
 
@@ -102,6 +103,10 @@ return current_mode == MODE_IMG ? 1 : 0;
 /* ---- Mode handlers ---- */
 void handle_cli_mode(void) {
     uart_puts("\r\nWelcome to MyOS!\r\n");
+    print_color("[HELP] ", YELLOW);
+    uart_puts("Start by typing ");
+    print_color("help", YELLOW);
+    uart_puts(" to see available commands.\r\n");
     for (;;) {
         char buf[CMD_BUFFER_LEN];
         int cur = 0;

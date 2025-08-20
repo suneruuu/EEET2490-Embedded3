@@ -4,8 +4,11 @@
 #include "includes/utils/string.h"
 #include "includes/peripheral/uart0.h"
 #include "includes/peripheral/uart1.h"
+#include "includes/library/mbox.h"
 
 #define CMD_LIST_SIZE (sizeof(cmd_list) / sizeof(Command))
+
+/* no local helpers needed */
 
 Command cmd_list[] = {
     {"help", help_cmd},
@@ -47,13 +50,13 @@ void help_cmd(char *cmd_name) { // <blank> | <cmd_name>
 }
 
 void cls_cmd(char* unused) { // clear scr
-    uart_puts("\033[2J\033[H"); //use ANSI escape sequence: \033[2J -> erase screen, \033[H -> move cursor to top-left
-    uart_puts("MyOS> "); //reprint prompt
+    uart_puts("\033[2J\033[H");
+    print_prompt();
 }
 
 void show_info_cmd(char *unused) {
-    uart_puts("Board Revision: check this later\n");
-    uart_puts("MAC Address: check this later\n");
+    get_mac_address();
+    get_board_revision();
 }
 
 void baudrate_cmd(char *cnum) {
