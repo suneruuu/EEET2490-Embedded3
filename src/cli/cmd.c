@@ -4,6 +4,7 @@
 #include "includes/cli/print_cmd.h"
 #include <string.h>
 #include <stdio.h>
+#include "includes/library/mbox.h"
 
 #define CMD_LIST_SIZE (sizeof(cmd_list) / sizeof(Command))
 
@@ -47,8 +48,8 @@ void cls_cmd(char* unused) { // clear scr
 }
 
 void show_info_cmd(char *unused) {
-    uart_puts("Board Revision: check this later\n");
-    uart_puts("MAC Address: check this later\n");
+    get_mac_address();
+    get_board_revision();
 }
 
 void baudrate_cmd(char *cnum) {

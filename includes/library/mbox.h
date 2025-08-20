@@ -42,3 +42,5 @@ extern volatile unsigned int mBuf[36];
 
 /* Function Prototypes */
 int mbox_call(unsigned int buffer_addr, unsigned char channel);
+void get_mac_address();
+void get_board_revision();
