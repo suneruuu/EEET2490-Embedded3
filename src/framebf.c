@@ -55,9 +55,9 @@ void framebf_init()
  mBuf[34] = MBOX_TAG_LAST;
  // Call Mailbox
  if (mbox_call(ADDR(mBuf), MBOX_CH_PROP) //mailbox call is successful ?
- && mBuf[20] == COLOR_DEPTH //got correct color depth ?
-&& mBuf[24] == PIXEL_ORDER //got correct pixel order ?
-&& mBuf[28] != 0 //got a valid address for frame buffer ?
+    && mBuf[20] == COLOR_DEPTH //got correct color depth ?
+    && mBuf[24] == PIXEL_ORDER //got correct pixel order ?
+    && mBuf[28] != 0 //got a valid address for frame buffer ?
 ) {
  /* Convert GPU address to ARM address (clear higher address bits)
  * Frame Buffer is located in RAM memory, which VideoCore MMU
@@ -68,18 +68,18 @@ void framebf_init()
  mBuf[28] &= 0x3FFFFFFF;
  // Access frame buffer as 1 byte per each address
  fb = (unsigned char *)((unsigned long)mBuf[28]);
- uart_puts("Got allocated Frame Buffer at RAM physical address: ");
- uart_hex(mBuf[28]);
- uart_puts("\n");
- uart_puts("Frame Buffer Size (bytes): ");
- uart_dec(mBuf[29]);
- uart_puts("\n");
- width = mBuf[5]; // Actual physical width
- height = mBuf[6]; // Actual physical height
- pitch = mBuf[33]; // Number of bytes per line
- } else {
- uart_puts("Unable to get a frame buffer with provided setting\n");
-  }
+//  uart_puts("Got allocated Frame Buffer at RAM physical address: ");
+//  uart_hex(mBuf[28]);
+//  uart_puts("\n");
+//  uart_puts("Frame Buffer Size (bytes): ");
+//  uart_dec(mBuf[29]);
+//  uart_puts("\n");
+    width = mBuf[5]; // Actual physical width
+    height = mBuf[6]; // Actual physical height
+    pitch = mBuf[33]; // Number of bytes per line
+} else {
+// uart_puts("Unable to get a frame buffer with provided setting\n");
+}
 }
 void drawPixelARGB32(int x, int y, unsigned int attr)
 {

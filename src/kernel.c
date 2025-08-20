@@ -65,11 +65,12 @@ framebf_init();
 // drawCircleARGB32(300, 500, 100, 0x00AA0000, 1);
 // drawPixelARGB32(300, 300, 0x00FF0000); //RED
 //drawString(50, 613, Welcome_msg, 0x00AA0000, 2);
-drawImage(meme, 400, 200, 612, 612);
-drawString(400, 200, name_msg1, 0x00AA0000, 2);
-drawString(400, 250, name_msg2, 0x0000BB00, 2);
-drawString(400, 300, name_msg3, 0x00FFFF00, 2);
-drawString(400, 350, name_msg4, 0x00FF8C00, 2);
+drawImage(meme, 100, 0, 1280, 960);
+drawString(450, 760, "Hello!", 0xFFFFFFFF,3);
+drawString(450, 790, name_msg1, 0xFFFFFFFF, 2);
+drawString(450, 820, name_msg2, 0xFFFFFFFF, 2);
+drawString(450, 850, name_msg3, 0xFFFFFFFF, 2);
+drawString(450, 880, name_msg4, 0xFFFFFFFF, 2);
 
 //print_color("Hi", RED);
 // echo everything back
