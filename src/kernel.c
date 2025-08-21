@@ -9,10 +9,7 @@
 
 void main()
 {
-    // print 
-    print_image();
-    print_name();
-    print_welcome_msg();
+
     // enter CLI
     chmod_to_cli_mode();
     handle_cli_mode();

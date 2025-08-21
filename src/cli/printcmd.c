@@ -78,6 +78,14 @@ void print_cmd_not_found(void) {
 
 void print_name(void) {
     framebf_init();
+
+}
+
+void print_image(void) {
+    framebf_init();
+    drawImage(meme, 0, 0, 720, 540);
+    drawImage(biome, 720, 0, 720, 540);
+    drawImage(meme2, 0, 540, 720, 540);
     drawString(40, 790, "Huan", 0xFFFFFFFF, 2);
     drawString(315, 780, "Hieu", 0xFFFFFFFF, 2);
     drawString(1190, 200, "Quynh", 0xFFFFFFFF, 2);
@@ -89,13 +97,6 @@ void print_name(void) {
     drawString(110, 450, "Group 4", 0xFFFFFFFF, 4);
     drawString(600, 830, "Quan", 0xFFFFFFFF, 2);
     drawString(50, 570, "Who cause the most bugs?", 0x000000000, 3);
-}
-
-void print_image(void) {
-    framebf_init();
-    drawImage(meme, 0, 0, 720, 540);
-    drawImage(biome, 720, 0, 720, 540);
-    drawImage(meme2, 0, 540, 720, 540);
 }
 
 void print_welcome_msg(void) {
