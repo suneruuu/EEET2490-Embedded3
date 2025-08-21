@@ -4,7 +4,8 @@
 #include "..\includes\framebf.h"
 #include "..\includes\color.h"
 #include "../assets/images/meme.c"
-
+#include "../assets/images/biome.c"
+#include "../assets/images/meme2.c"
 
 #define Welcome_msg \
 "\n"\
@@ -65,12 +66,20 @@ framebf_init();
 // drawCircleARGB32(300, 500, 100, 0x00AA0000, 1);
 // drawPixelARGB32(300, 300, 0x00FF0000); //RED
 //drawString(50, 613, Welcome_msg, 0x00AA0000, 2);
-drawImage(meme, 100, 0, 1280, 960);
-drawString(450, 760, "Hello!", 0xFFFFFFFF,3);
-drawString(450, 790, name_msg1, 0xFFFFFFFF, 2);
-drawString(450, 820, name_msg2, 0xFFFFFFFF, 2);
-drawString(450, 850, name_msg3, 0xFFFFFFFF, 2);
-drawString(450, 880, name_msg4, 0xFFFFFFFF, 2);
+drawImage(meme, 0, 0, 720, 540);
+drawImage(biome, 720, 0, 720, 540);
+drawImage(meme2, 0, 540, 720, 540);
+drawString(40, 790, "Huan", 0xFFFFFFFF, 2);
+drawString(315, 780, "Hieu", 0xFFFFFFFF, 2);
+drawString(1190, 200, "Quynh", 0xFFFFFFFF, 2);
+drawString(1275, 160, "BUGS", 0xFFFFFFFF, 2);
+drawString(1260, 140, "LOT OF", 0xFFFFFFFF, 2);
+drawString(830, 50, "The", 0xFFFFFFFF, 3);
+drawString(820, 80, "Game", 0xFFFFFFFF, 3);
+drawString(500, 350, "Deadline", 0x00000000, 3);
+drawString(110, 450, "Group 4", 0xFFFFFFFF, 4);
+drawString(600, 830, "Quan", 0xFFFFFFFF, 2);
+drawString(50, 570, "Who cause the most bugs?", 0x000000000, 3);
 
 //print_color("Hi", RED);
 // echo everything back
