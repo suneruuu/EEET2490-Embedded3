@@ -3,6 +3,9 @@
 #include "includes/peripheral/uart0.h"
 #include "includes/framebf.h"
 #include "assets/images/meme.c"
+#include "assets/images/biome.c"
+#include "assets/images/meme2.c"
+
 
 #define name_msg1 "Ngo Minh Hieu - s3940891"
 #define name_msg2 "Nguyen Ngoc Huan - s3979896"
@@ -10,7 +13,7 @@
 #define name_msg4 "Ngo Duc Minh Quan - s3938194"
 
 void print_prompt(void) {
-    uart_puts("MyOS> ");
+    uart_puts("ChaOS> ");
 }
 
 void print_usage(char *command)
@@ -75,16 +78,24 @@ void print_cmd_not_found(void) {
 
 void print_name(void) {
     framebf_init();
-    drawString(450, 760, "Hello!", 0xFFFFFFFF,3);
-    drawString(450, 790, name_msg1, 0xFFFFFFFF, 2);
-    drawString(450, 820, name_msg2, 0xFFFFFFFF, 2);
-    drawString(450, 850, name_msg3, 0xFFFFFFFF, 2);
-    drawString(450, 880, name_msg4, 0xFFFFFFFF, 2);
+    drawString(40, 790, "Huan", 0xFFFFFFFF, 2);
+    drawString(315, 780, "Hieu", 0xFFFFFFFF, 2);
+    drawString(1190, 200, "Quynh", 0xFFFFFFFF, 2);
+    drawString(1275, 160, "BUGS", 0xFFFFFFFF, 2);
+    drawString(1260, 140, "LOT OF", 0xFFFFFFFF, 2);
+    drawString(830, 50, "The", 0xFFFFFFFF, 3);
+    drawString(820, 80, "Game", 0xFFFFFFFF, 3);
+    drawString(500, 350, "Deadline", 0x00000000, 3);
+    drawString(110, 450, "Group 4", 0xFFFFFFFF, 4);
+    drawString(600, 830, "Quan", 0xFFFFFFFF, 2);
+    drawString(50, 570, "Who cause the most bugs?", 0x000000000, 3);
 }
 
 void print_image(void) {
     framebf_init();
-    drawImage(meme, 400, 200, 612, 612);
+    drawImage(meme, 0, 0, 720, 540);
+    drawImage(biome, 720, 0, 720, 540);
+    drawImage(meme2, 0, 540, 720, 540);
 }
 
 void print_welcome_msg(void) {

@@ -103,7 +103,7 @@ return current_mode == MODE_IMG ? 1 : 0;
 
 /* ---- Mode handlers ---- */
 void handle_cli_mode(void) {
-    uart_puts("\r\nWelcome to MyOS!\r\n");
+    uart_puts("\r\nWelcome to ChaOS!\r\n");
     print_color("[HELP] ", YELLOW);
     uart_puts("Start by typing ");
     print_color("help", YELLOW);
