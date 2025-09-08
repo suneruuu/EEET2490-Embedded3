@@ -3,85 +3,126 @@
 #include "..\includes\mbox.h"
 #include "..\includes\framebf.h"
 #include "..\includes\color.h"
-#include "../assets/images/meme.c"
-#include "../assets/images/biome.c"
-#include "../assets/images/meme2.c"
 
-#define Welcome_msg \
-"\n"\
-":::::::::: :::::::::: :::::::::: ::::::::::: ::::::::   :::     ::::::::   :::::::\n"\
-":+:        :+:        :+:            :+:    :+:    :+: :+:     :+:    :+: :+:   :+:\n"\
-"+:+        +:+        +:+            +:+          +:+ +:+ +:+  +:+    +:+ +:+  :+:+\n"\
-"+#++:++#   +#++:++#   +#++:++#       +#+        +#+  +#+  +:+   +#++:++#+ +#+ + +:+\n"\
-"+#+        +#+        +#+            +#+      +#+   +#+#+#+#+#+       +#+ +#+#  +#+\n"\
-"#+#        #+#        #+#            #+#     #+#          #+#  #+#    #+# #+#   #+#\n"\
-"########## ########## ##########     ###    ##########    ###   ########   #######\n"\
-"\n"\
-" ::::::::  :::    :::     :::      ::::::::   ::::::::\n"\
-":+:    :+: :+:    :+:   :+: :+:   :+:    :+: :+:    :+:\n"\
-"+:+        +:+    +:+  +:+   +:+  +:+    +:+ +:+\n"\
-"+#+        +#++:++#++ +#++:++#++: +#+    +:+ +#++:++#++\n"\
-"+#+        +#+    +#+ +#+     +#+ +#+    +#+        +#+\n"\
-"#+#    #+# #+#    #+# #+#     #+# #+#    #+# #+#    #+#\n"\
-" ########  ###    ### ###     ###  ########   ########\n"\
-"\n"\
-"Developed by Ngo Minh Hieu - s3940891"\
-"\n"\
-"             Nguyen Ngoc Huan - s3979896"\
-"\n"\
-"             Nguyen Le Thuc Quynh - s3924993"\
-"\n"\
-"             Ngo Duc Minh Quan - s3938194\n"\
 
-#define name_msg1 \
-"Ngo Minh Hieu - s3940891"\
+// Enums for different game states
+typedef enum GameScreen { MAIN_MENU, INSTRUCTIONS, OPTIONS, CREDITS, QUIT } GameScreen;
 
-#define name_msg2 \
-"Nguyen Ngoc Huan - s3979896"\
+// Function to clear the screen
+void ClearScreen() {
+    drawRectARGB32(0, 0, 1440, 1080, 0x00000000, 1);
+}
 
-#define name_msg3 \
-"Nguyen Le Thuc Quynh - s3924993"\
+// Function to print the main menu
+void PrintMainMenu() {
+    ClearScreen();
+    // Centered positions and larger zoom level
+    drawString(180, 100, "==================================", 0x00FFFFFF, 4);
+    drawString(510, 160, "BABA IS YOU", 0x00FFFFFF, 4);
+    drawString(180, 220, "==================================", 0x00FFFFFF, 4);
 
-#define name_msg4 \
-"Ngo Duc Minh Quan - s3938194"\
+    // Draw button shapes and text for menu options
+    drawRectARGB32(493, 336, 943, 376, 0x80808080, 1);
+    drawRectARGB32(493, 336, 943, 376, 0x00000000, 0);
+    drawString(510, 340, "1. Start Game", 0x00FFFFFF, 4);
 
-void main()
-{
- // set up serial console
-uart_init();
-// say hello
+    drawRectARGB32(493, 396, 1053, 436, 0x80808080, 1);
+    drawRectARGB32(493, 396, 1053, 436, 0x00000000, 0);
+    drawString(510, 400, "2. Instructions", 0x00FFFFFF, 4);
 
-uart_puts(Welcome_msg);                                                             
-// Initialize frame buffer
-framebf_init();
-// Draw something on the screen
-// drawRectARGB32(100,100,400,400,0x00AA0000,1); //RED
-// drawRectARGB32(150,150,400,400,0x0000BB00,1); //GREEN
-// drawRectARGB32(200,200,400,400,0x000000CC,1); //BLUE
-// drawRectARGB32(250,250,400,400,0x00FFFF00,1); //YELLOW
-// drawRectARGB32(700,450,1000,700,0x008B008B,1); //purple
-// drawRectARGB32(750,500,1000,700,0x00FF8C00,1); //orange
-// drawRectARGB32(800,550,1000,700,0x00F7A189,1); //light_salmon
-// drawLineARGB32(420, 100, 800, 0x00F7A189);
-// drawCircleARGB32(300, 500, 100, 0x00AA0000, 1);
-// drawPixelARGB32(300, 300, 0x00FF0000); //RED
-//drawString(50, 613, Welcome_msg, 0x00AA0000, 2);
-drawImage(meme, 0, 0, 720, 540);
-drawImage(biome, 720, 0, 720, 540);
-drawImage(meme2, 0, 540, 720, 540);
-drawString(40, 790, "Huan", 0xFFFFFFFF, 2);
-drawString(315, 780, "Hieu", 0xFFFFFFFF, 2);
-drawString(1190, 200, "Quynh", 0xFFFFFFFF, 2);
-drawString(1275, 160, "BUGS", 0xFFFFFFFF, 2);
-drawString(1260, 140, "LOT OF", 0xFFFFFFFF, 2);
-drawString(830, 50, "The", 0xFFFFFFFF, 3);
-drawString(820, 80, "Game", 0xFFFFFFFF, 3);
-drawString(500, 350, "Deadline", 0x00000000, 3);
-drawString(110, 450, "Group 4", 0xFFFFFFFF, 4);
-drawString(600, 830, "Quan", 0xFFFFFFFF, 2);
-drawString(50, 570, "Who cause the most bugs?", 0x000000000, 3);
+    drawRectARGB32(493, 456, 943, 496, 0x80808080, 1);
+    drawRectARGB32(493, 456, 943, 496, 0x00000000, 0);
+    drawString(510, 460, "3. Options", 0x00FFFFFF, 4);
 
-//print_color("Hi", RED);
+    drawRectARGB32(493, 516, 943, 556, 0x80808080, 1);
+    drawRectARGB32(493, 516, 943, 556, 0x00000000, 0);
+    drawString(510, 520, "4. Credits", 0x00FFFFFF, 4);
+
+    drawRectARGB32(493, 576, 943, 616, 0x80808080, 1);
+    drawRectARGB32(493, 576, 943, 616, 0x00000000, 0);
+    drawString(510, 580, "5. Quit", 0x00FFFFFF, 4);
+}
+
+// Function to print the instructions
+void PrintInstructions() {
+    ClearScreen();
+    // Centered positions and larger zoom level
+    drawString(180, 100, "==================================", 0x00FFFFFF, 4);
+    drawString(510, 160, "HOW TO PLAY", 0x00FFFFFF, 4);
+    drawString(180, 220, "==================================", 0x00FFFFFF, 4);
+
+    drawString(100, 340, "The rules of the game are defined by the blocks in the level.", 0x00FFFFFF, 2);
+    drawString(100, 440, "For example, if you see the blocks 'BABA IS YOU', you control Baba.", 0x00FFFFFF, 2);
+    drawString(100, 540, "If the blocks say 'ROCK IS PUSH', you can push rocks.", 0x00FFFFFF, 2);
+    drawString(100, 640, "When you touch a flag that is marked 'FLAG IS WIN', you win the level!", 0x00FFFFFF, 2);
+    drawString(100, 740, "You can change the rules by moving the blocks around.", 0x00FFFFFF, 2);
+    
+    drawString(100, 840, "Press enter to return to the main menu.", 0x00FFFFFF, 4);
+}
+
+// Function to print credits
+void PrintCredits() {
+    ClearScreen();
+    drawString(180, 100, "==================================", 0x00FFFFFF, 4);
+    drawString(510, 160, "CREDITS", 0x00FFFFFF, 4);
+    drawString(180, 220, "==================================", 0x00FFFFFF, 4);
+
+    drawString(200, 400, "A game by: Arvi Teikari", 0x00FFFFFF, 4);
+    drawString(200, 500, "Made with: C and QEMU", 0x00FFFFFF, 4);
+    
+    drawString(100, 840, "Press enter to return to the main menu.", 0x00FFFFFF, 4);
+}
+
+
+int main(void) {
+    framebf_init();
+    
+    GameScreen currentScreen = MAIN_MENU;
+    char choice;
+
+    while (currentScreen != QUIT) {
+        if (currentScreen == MAIN_MENU) {
+            PrintMainMenu();
+            
+            // This is a placeholder for input. You will need a graphics-based
+            // input system, not a UART-based one.
+            choice = uart_getc();
+            
+            switch(choice) {
+                case '1':
+                    drawString(100, 740, "Starting game... (placeholder)", 0x00FFFFFF, 4);
+                    break;
+                case '2':
+                    currentScreen = INSTRUCTIONS;
+                    break;
+                case '3':
+                    drawString(100, 740, "Options... (placeholder)", 0x00FFFFFF, 4);
+                    break;
+                case '4':
+                    currentScreen = CREDITS;
+                    break;
+                case '5':
+                    currentScreen = QUIT;
+                    break;
+                default:
+                    drawString(100, 740, "Invalid choice. Please try again.", 0x00FFFFFF, 4);
+                    break;
+            }
+        } else if (currentScreen == INSTRUCTIONS) {
+            PrintInstructions();
+            // Wait for user input to return to the main menu
+            uart_getc();
+            currentScreen = MAIN_MENU;
+        } else if (currentScreen == CREDITS) {
+            PrintCredits();
+            // Wait for user input to return to the main menu
+            uart_getc();
+            currentScreen = MAIN_MENU;
+        }
+    }
+    
+    drawString(100, 800, "Thank you for playing!", 0x00FFFFFF, 4);
+
 // echo everything back
 while(1) {
     //read each char
@@ -90,3 +131,4 @@ while(1) {
     uart_sendc(c);
     }
 }
+
