@@ -19,19 +19,10 @@ void PrintMainMenu() {
     //Background for main menu
     drawImage(MainMenu_bgbaba_bg, 0, 0, 800, 600);
     // Draw text for menu options
-    drawRectARGB32(170, 240, 460, 60, 0xFFFF80A0, 0);
     drawString(180, 250, "1. Start Game", 0xFF80A0, 4);
-
-    drawRectARGB32(170, 300, 460, 60, 0x80505050, 1);
     drawString(180, 310, "2. Instructions", 0xFF80A0, 4);
-    
-    drawRectARGB32(170, 360, 460, 60, 0x80505050, 1);
     drawString(180, 370, "3. Options", 0xFF80A0, 4);
-
-    drawRectARGB32(170, 420, 460, 60, 0x80505050, 1);
     drawString(180, 430, "4. Credits", 0xFF80A0, 4);
-
-    drawRectARGB32(170, 480, 460, 60, 0x80505050, 1);
     drawString(180, 490, "5. Quit", 0xFF80A0, 4);
 }
 
