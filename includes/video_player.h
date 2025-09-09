@@ -27,6 +27,9 @@ void video_play_at_rect(int x, int y, int dst_w, int dst_h);
 /* Convenience: play once scaled to bottom-right quadrant (width/2 x height/2). */
 void video_play_fill_bottom_right_quad(void);
 
+/* New function to center the video and scale it by 3x. */
+void video_play_fill_center_quad(void);
+
 #ifdef __cplusplus
 }
 #endif

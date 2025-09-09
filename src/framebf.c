@@ -23,13 +23,13 @@ void framebf_init()
  mBuf[2] = MBOX_TAG_SETPHYWH; //Set physical width-height
  mBuf[3] = 8; // Value size in bytes
  mBuf[4] = 0; // REQUEST CODE = 0
- mBuf[5] = 1440; // Value(width)
- mBuf[6] = 1080; // Value(height)
+ mBuf[5] = 800; // Value(width)
+ mBuf[6] = 600; // Value(height)
  mBuf[7] = MBOX_TAG_SETVIRTWH; //Set virtual width-height
  mBuf[8] = 8;
  mBuf[9] = 0;
- mBuf[10] = 1440;
- mBuf[11] = 1080;
+ mBuf[10] = 800;
+ mBuf[11] = 600;
  mBuf[12] = MBOX_TAG_SETVIRTOFF; //Set virtual offset
  mBuf[13] = 8;
  mBuf[14] = 0;
@@ -179,5 +179,23 @@ void drawString(int x, int y, char *str, unsigned int attr, int zoom)
     }
 }
 
+void wait_msec(unsigned int msVal){
+    register unsigned long f, t, r, expiredTime; //64 bits
 
+    // Get the current counter frequency (Hz), 1Hz = 1 pulses/second
+    asm volatile ("mrs %0, cntfrq_el0" : "=r"(f));
+
+    // Read the current counter value
+    asm volatile ("mrs %0, cntpct_el0" : "=r"(t));
+    expiredTime = t + f * msVal / 1000;
+
+    do {
+    asm volatile ("mrs %0, cntpct_el0" : "=r"(r));
+    } while(r < expiredTime);
+}
+
+// Function to clear the screen
+void ClearScreen() {
+    drawRectARGB32(0, 0, 800, 600, 0x00000000, 1);
+}
 

@@ -1,3 +1,5 @@
+#include "..\includes\video_player.h"
+
 /* No std headers */
 typedef unsigned int   u32;
 typedef unsigned short u16;
@@ -83,21 +85,34 @@ void video_blit_scaled_frame_index(int idx, int x, int y, int dst_w, int dst_h){
 /* ---- API ---- */
 void video_play_init(void){
   if(!fb || width==0u || height==0u || pitch==0u) framebf_init();
+  
+  // Call the new function to play the video in the center of the 800x600 screen
+  video_play_fill_center_quad();
 }
 
+/* ---- Function to center the video on 800x600 screen ---- */
+void video_play_fill_center_quad(void) {
+  // Set the destination width and height to the original video resolution
+  int dst_w = (int)VIDEO_WIDTH * 3;
+  int dst_h = (int)VIDEO_HEIGHT * 3;
+  
+  // Calculate the position to center the video on the 800x600 screen
+  int x = (800 - dst_w) / 2;  // Center horizontally
+  int y = (600 - dst_h) / 2;  // Center vertically
+
+  // Ensure the position is within bounds (handle cases where video is larger than screen)
+  if (x < 0) x = 0;
+  if (y < 0) y = 0;
+
+  // Call the function to blit the frame at the calculated position
+  video_play_at_rect(x, y, dst_w, dst_h);
+}
+
+/* ---- Function to play the video at specific position and resolution ---- */
 void video_play_at_rect(int x, int y, int dst_w, int dst_h){
   u32 us = 1000000u/VIDEO_FPS;
   for(int i=0;i<FRAMES_TOTAL;++i){
     video_blit_scaled_frame_index(i, x, y, dst_w, dst_h);
     delay_us(us);
   }
-}
-
-void video_play_fill_bottom_right_quad(void){
-  int dst_w = (int)(width  >> 1);
-  int dst_h = (int)(height >> 1);
-  int x = (int)width  - dst_w;
-  int y = (int)height - dst_h;
-
-  video_play_at_rect(x, y, dst_w, dst_h);
 }

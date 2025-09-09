@@ -3,11 +3,11 @@
 #include "..\includes\mbox.h"
 #include "..\includes\framebf.h"
 #include "..\includes\color.h"
-#include "../assets/images/meme.c"
-#include "../assets/images/biome.c"
-#include "../assets/images/meme2.c"
+#include "../assets/images/hello.c"
+#include "../assets/images/cinema.c"
 #include "..\includes\video_player.h"
 #include "..\includes\video_data.h"
+
 #define Welcome_msg \
 "\n"\
 ":::::::::: :::::::::: :::::::::: ::::::::::: ::::::::   :::     ::::::::   :::::::\n"\
@@ -55,24 +55,32 @@ uart_init();
 uart_puts(Welcome_msg);                                                             
 // Initialize frame buffer
 framebf_init();
-drawImage(meme, 0, 0, 720, 540);
-drawImage(biome, 720, 0, 720, 540);
-drawImage(meme2, 0, 540, 720, 540);
-drawString(40, 790, "Huan", 0xFFFFFFFF, 2);
-drawString(315, 780, "Hieu", 0xFFFFFFFF, 2);
-drawString(1190, 200, "Quynh", 0xFFFFFFFF, 2);
-drawString(1275, 160, "BUGS", 0xFFFFFFFF, 2);
-drawString(1260, 140, "LOT OF", 0xFFFFFFFF, 2);
-drawString(830, 50, "The", 0xFFFFFFFF, 3);
-drawString(820, 80, "Game", 0xFFFFFFFF, 3);
-drawString(500, 350, "Deadline", 0x00000000, 3);
-drawString(110, 450, "Group 4", 0xFFFFFFFF, 4);
-drawString(600, 830, "Quan", 0xFFFFFFFF, 2);
-drawString(50, 570, "Who cause the most bugs?", 0x000000000, 3);
-video_play_init();           /* safe: does nothing if FB already inited */
-video_play_fill_bottom_right_quad();
+// Draw something on the screen
+// drawRectARGB32(100,100,400,400,0x00AA0000,1); //RED
+// drawRectARGB32(150,150,400,400,0x0000BB00,1); //GREEN
+// drawRectARGB32(200,200,400,400,0x000000CC,1); //BLUE
+// drawRectARGB32(250,250,400,400,0x00FFFF00,1); //YELLOW
+// drawRectARGB32(700,450,1000,700,0x008B008B,1); //purple
+// drawRectARGB32(750,500,1000,700,0x00FF8C00,1); //orange
+// drawRectARGB32(800,550,1000,700,0x00F7A189,1); //light_salmon
+// drawLineARGB32(420, 100, 800, 0x00F7A189);
+// drawCircleARGB32(300, 500, 100, 0x00AA0000, 1);
+// drawPixelARGB32(300, 300, 0x00FF0000); //RED
+//drawString(50, 613, Welcome_msg, 0x00AA0000, 2);
+drawImage(hello, 0, 0, 800, 600);
+wait_msec(1000);
+ClearScreen();
+drawImage(cinema, 0, 0, 800, 600);
+drawString(300, 100, "Team 4", 0x0000BB00, 2);
+drawString(150, 130, name_msg1, 0x00AA0000, 2);
+drawString(150, 160, name_msg2, 0x000000CC, 2);
+drawString(150, 190, name_msg3, 0x00FF8C00, 2);
+drawString(150, 220, name_msg4, 0x00F7A189, 2);
+wait_msec(3000);
+ClearScreen();
+video_play_init();
+video_play_fill_center_quad();
 
-//print_color("Hi", RED);
 // echo everything back
 while(1) {
     //read each char
