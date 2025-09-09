@@ -8,3 +8,4 @@ void drawCircleARGB32(int x1, int y1, int r, unsigned int attr, int fill);
 int check(int px, int py, int x, int y, int r);
 void drawString(int x, int y, char *str, unsigned int attr, int zoom);
 void drawChar(unsigned char ch, int x, int y, unsigned int attr, int zoom);
+void drawImage(const unsigned long* image_data, int start_x, int start_y, int width, int height);
