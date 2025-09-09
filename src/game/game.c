@@ -3,7 +3,7 @@
 #include "..\includes\mbox.h"
 #include "..\includes\framebf.h"
 #include "..\includes\color.h"
-#include "..\assets\mainmenu_bg.c"
+#include "..\assets\images\mainmenu_bg.c"
 #include "..\assets\images\othermenu_bg.c"
 // Enums for different game states
 typedef enum GameScreen { MAIN_MENU, INSTRUCTIONS, OPTIONS, CREDITS, QUIT } GameScreen;
