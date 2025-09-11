@@ -130,8 +130,8 @@ int main(void) {
         }else if (currentScreen == STARTGAME){
             PrintLevel();
 
-            choice = uart_getc();
-            switch (choice)
+            char level_choice = uart_getc();
+            switch (level_choice)
             {
             case '1':
                 Level1Map();
