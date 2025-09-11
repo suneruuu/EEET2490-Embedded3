@@ -5,14 +5,33 @@
 #include "..\includes\color.h"
 #include "..\assets\images\mainmenu_bg.c"
 #include "..\assets\images\othermenu_bg.c"
+#include "..\assets\images\baba_is_you_level_hex.c"
 // Enums for different game states
-typedef enum GameScreen { MAIN_MENU, INSTRUCTIONS, OPTIONS, CREDITS, QUIT } GameScreen;
+typedef enum GameScreen { MAIN_MENU, STARTGAME, INSTRUCTIONS, OPTIONS, CREDITS, QUIT } GameScreen;
 
 // Function to clear the screen
 void ClearScreen() {
     drawRectARGB32(0, 0, 800, 600, 0x00000000, 1);
 }
+void Level1Map() {
+    // Draw something on the screen
+	drawRectARGB32(200, 20, 600, 250, 0x000000CC, 2);
+	drawRectARGB32(225, 50, 575, 250, 0x000000, 2);
+	drawRectARGB32(100, 250, 700, 550, 0x000000CC, 2);
+	drawRectARGB32(225, 250, 375, 275, 0x000000, 2);
+	drawRectARGB32(125, 275, 375, 525, 0x000000, 2);
+	drawRectARGB32(350, 350, 450, 450, 0x000000, 2);
+	drawRectARGB32(425, 275, 675, 525, 0x000000, 2);
+}
+void PrintLevel() {
+    ClearScreen();
 
+    drawImage(level, 0, 0, 800, 600);
+
+    drawString(180, 370, "1. Level 1", 0xF54927, 4);
+    drawString(180, 450, "2. Level 2", 0xF54927, 4);
+
+}
 // Function to print the main menu
 void PrintMainMenu() {
     ClearScreen();
@@ -90,7 +109,7 @@ int main(void) {
             
             switch(choice) {
                 case '1':
-                    drawString(50, 500, "Starting game... (placeholder)", 0x00FFFFFF, 4);
+                    currentScreen = STARTGAME;
                     break;
                 case '2':
                     currentScreen = INSTRUCTIONS;
@@ -108,7 +127,21 @@ int main(void) {
                     drawString(50, 500, "Invalid choice. Please try again.", 0x00FFFFFF, 4);
                     break;
             }
-        } else if (currentScreen == INSTRUCTIONS) {
+        }else if (currentScreen == STARTGAME){
+            PrintLevel();
+
+            choice = uart_getc();
+            switch (choice)
+            {
+            case '1':
+                Level1Map();
+                break;
+            
+            default:
+                break;
+            }
+            currentScreen = MAIN_MENU;
+        }else if (currentScreen == INSTRUCTIONS) {
             PrintInstructions();
             // Wait for user input to return to the main menu
             uart_getc();
