@@ -6,162 +6,178 @@
 #include "..\assets\images\mainmenu_bg.c"
 #include "..\assets\images\othermenu_bg.c"
 #include "..\assets\images\baba_is_you_level_hex.c"
-// Enums for different game states
-typedef enum GameScreen { MAIN_MENU, STARTGAME, INSTRUCTIONS, OPTIONS, CREDITS, QUIT } GameScreen;
 
-// Function to clear the screen
-void ClearScreen() {
-    drawRectARGB32(0, 0, 800, 600, 0x00000000, 1);
+typedef enum GameScreen {
+    MAIN_MENU,
+    STARTGAME,
+    LEVEL,
+    INSTRUCTIONS,
+    OPTIONS,
+    CREDITS,
+    QUIT
+} GameScreen;
+
+static void ClearScreen(void);
+static void PrintMainMenu(void);
+static void PrintInstructions(void);
+static void PrintCredits(void);
+static void PrintLevel(void);
+static void Level1Map(void);
+
+// Filter CR/LF so they don't act like extra keypresses
+static char read_key_filtered(void) {
+    char c;
+    do { c = uart_getc(); } while (c == '\r' || c == '\n');
+    return c;
 }
-void Level1Map() {
-    // Draw something on the screen
-	drawRectARGB32(200, 20, 600, 250, 0x000000CC, 2);
-	drawRectARGB32(225, 50, 575, 250, 0x000000, 2);
-	drawRectARGB32(100, 250, 700, 550, 0x000000CC, 2);
-	drawRectARGB32(225, 250, 375, 275, 0x000000, 2);
-	drawRectARGB32(125, 275, 375, 525, 0x000000, 2);
-	drawRectARGB32(350, 350, 450, 450, 0x000000, 2);
-	drawRectARGB32(425, 275, 675, 525, 0x000000, 2);
+
+static void ClearScreen(void) {
+    // Opaque black (ARGB)
+    drawRectARGB32(0, 0, 800, 600, 0xFF000000, 1);
 }
-void PrintLevel() {
+
+static void Level1Map(void) {
+    // Simple placeholder layout (rects)
+    drawRectARGB32(200,  20, 600, 250, 0x000000CC, 2);
+    drawRectARGB32(225,  50, 575, 250, 0x000000, 2);
+    drawRectARGB32(100, 250, 700, 550, 0x000000CC, 2);
+    drawRectARGB32(225, 250, 375, 275, 0x000000, 2);
+    drawRectARGB32(125, 275, 375, 525, 0x000000, 2);
+    drawRectARGB32(350, 350, 450, 450, 0x000000, 2);
+    drawRectARGB32(425, 275, 675, 525, 0x000000, 2);
+
+    // Hints
+    drawString(20, 560, "B: Back  Q: Main Menu", 0xFFFFFF, 2);
+}
+
+static void PrintLevel(void) {
     ClearScreen();
-
     drawImage(level, 0, 0, 800, 600);
-
     drawString(180, 370, "1. Level 1", 0xF54927, 4);
     drawString(180, 450, "2. Level 2", 0xF54927, 4);
-
+    drawString(20,  560, "Press 1 or 2 to select level, or Q to return", 0xFFFFFF, 2);
 }
-// Function to print the main menu
-void PrintMainMenu() {
+
+static void PrintMainMenu(void) {
     ClearScreen();
-    //Background for main menu
     drawImage(MainMenu_bgbaba_bg, 0, 0, 800, 600);
-    // Draw text for menu options
-    drawString(180, 250, "1. Start Game", 0xFF80A0, 4);
+    drawString(180, 250, "1. Start Game",   0xFF80A0, 4);
     drawString(180, 310, "2. Instructions", 0xFF80A0, 4);
-    drawString(180, 370, "3. Options", 0xFF80A0, 4);
-    drawString(180, 430, "4. Credits", 0xFF80A0, 4);
-    drawString(180, 490, "5. Quit", 0xFF80A0, 4);
+    drawString(180, 370, "3. Options",      0xFF80A0, 4);
+    drawString(180, 430, "4. Credits",      0xFF80A0, 4);
+    drawString(180, 490, "5. Quit",         0xFF80A0, 4);
 }
 
-// Function to print the instructions
-void PrintInstructions() {
+static void PrintInstructions(void) {
     ClearScreen();
-    //background
     drawImage(othermenu_bg, 0, 0, 800, 600);
-    // Centered positions and larger zoom level for 800x600 screen
-    drawString(80, 50, "====================", 0xFF80A0, 4);
-    drawString(220, 100, "HOW TO PLAY", 0xFF80A0, 4);
+    drawString(80,  50, "====================", 0xFF80A0, 4);
+    drawString(220, 100, "HOW TO PLAY",         0xFF80A0, 4);
     drawString(80, 150, "====================", 0xFF80A0, 4);
 
-    drawString(50, 220, "1. The rules of the game are defined by the", 0xFF80A0, 2);
-    drawString(50, 260, "blocks in the level.", 0xFF80A0, 2);
-    
-    drawString(50, 310, "2. For example, if you see the blocks 'BABA", 0xFF80A0, 2);
-    drawString(50, 330, "IS YOU', you control Baba.", 0xFF80A0, 2);
-    
-    drawString(50, 380, "3. If the blocks say 'ROCK IS PUSH', you can", 0xFF80A0, 2);
-    drawString(50, 400, "push rocks.", 0xFF80A0, 2);
-    
-    drawString(50, 450, "4. When you touch a flag that is marked", 0xFF80A0, 2);
-    drawString(50, 470, "'FLAG IS WIN', you win the level!", 0xFF80A0, 2);
-    
-    drawString(50, 520, "5. You can change the rules by moving the", 0xFF80A0, 2);
-    drawString(50, 540, "blocks around.", 0xFF80A0, 2);
-    
-    drawString(50, 570, "Press ENTER to return to the main menu.", 0xFF80A0, 2);
+    drawString(50, 220, "1. Rules are defined by text blocks.",         0xFF80A0, 2);
+    drawString(50, 260, "2. 'BABA IS YOU' means you control Baba.",     0xFF80A0, 2);
+    drawString(50, 310, "3. 'ROCK IS PUSH' lets you push rocks.",       0xFF80A0, 2);
+    drawString(50, 360, "4. Touch a 'FLAG IS WIN' flag to win.",        0xFF80A0, 2);
+    drawString(50, 410, "5. Move text blocks to change rules.",         0xFF80A0, 2);
+
+    drawString(50, 560, "Press any key to return to the main menu.",    0xFF80A0, 2);
 }
 
-// Function to print credits
-void PrintCredits() {
+static void PrintCredits(void) {
     ClearScreen();
     drawImage(othermenu_bg, 0, 0, 800, 600);
-    drawString(80, 50, "====================", 0xFF80A0, 4);
-    drawString(220, 100, "CREDITS", 0xFF80A0, 4);
+    drawString(80,  50, "====================", 0xFF80A0, 4);
+    drawString(220, 100, "CREDITS",             0xFF80A0, 4);
     drawString(80, 150, "====================", 0xFF80A0, 4);
-    
+
     drawString(50, 220, "A game by: Arvi Teikari", 0xFF80A0, 2);
-    
-    drawString(50, 250, "Made with: C and QEMU", 0xFF80A0, 2);
+    drawString(50, 250, "Made with: C and QEMU",   0xFF80A0, 2);
 
-    drawString(50, 520, "Press ENTER to return to the main menu.", 0xFF80A0, 2);
+    drawString(50, 560, "Press any key to return to the main menu.", 0xFF80A0, 2);
 }
-
 
 int main(void) {
-
     framebf_init();
-    
+
     GameScreen currentScreen = MAIN_MENU;
-    char choice;
+    int currentLevel = 0;
 
     while (currentScreen != QUIT) {
+
         if (currentScreen == MAIN_MENU) {
             PrintMainMenu();
-            
-            // This is a placeholder for input. You will need a graphics-based
-            // input system, not a UART-based one.
-            choice = uart_getc();
-            
-            // The following code is for demonstration and would need to be replaced by your input handling logic
-            // We will use a placeholder '2' to demonstrate the instructions screen.
-            
-            switch(choice) {
-                case '1':
-                    currentScreen = STARTGAME;
-                    break;
-                case '2':
-                    currentScreen = INSTRUCTIONS;
-                    break;
-                case '3':
-                    drawString(50, 500, "Options... (placeholder)", 0x00FFFFFF, 4);
-                    break;
-                case '4':
-                    currentScreen = CREDITS;
-                    break;
-                case '5':
-                    currentScreen = QUIT;
-                    break;
-                default:
-                    drawString(50, 500, "Invalid choice. Please try again.", 0x00FFFFFF, 4);
-                    break;
+            for (;;) {
+                char choice = read_key_filtered();
+                if (choice == '1') { currentScreen = STARTGAME; break; }
+                if (choice == '2') { currentScreen = INSTRUCTIONS; break; }
+                if (choice == '3') { 
+                    drawString(50, 520, "Options... (placeholder)", 0xFFFFFF, 3);
+                    continue;
+                }
+                if (choice == '4') { currentScreen = CREDITS; break; }
+                if (choice == '5') { currentScreen = QUIT; break; }
+                // else ignore invalid keys and keep waiting
             }
-        }else if (currentScreen == STARTGAME){
-            PrintLevel();
+        }
 
-            char level_choice = uart_getc();
-            switch (level_choice)
-            {
-            case '1':
-                Level1Map();
-                break;
-            
-            default:
-                break;
-            }
-            currentScreen = MAIN_MENU;
-        }else if (currentScreen == INSTRUCTIONS) {
+        else if (currentScreen == INSTRUCTIONS) {
             PrintInstructions();
-            // Wait for user input to return to the main menu
-            uart_getc();
-            currentScreen = MAIN_MENU;
-        } else if (currentScreen == CREDITS) {
-            PrintCredits();
-            // Wait for user input to return to the main menu
-            uart_getc();
+            (void)read_key_filtered();
             currentScreen = MAIN_MENU;
         }
-    }
-    
-    ClearScreen();
-    drawString(300, 300, "Goodbye!", 0x00FFFFFF, 4);
 
-    // echo everything back
-    while(1) {
-        //read each char
+        else if (currentScreen == CREDITS) {
+            PrintCredits();
+            (void)read_key_filtered();
+            currentScreen = MAIN_MENU;
+        }
+
+        else if (currentScreen == STARTGAME) {
+            PrintLevel();
+            for (;;) {
+                char level_choice = read_key_filtered();
+                if (level_choice == '1') {
+                    currentLevel = 1; currentScreen = LEVEL; break;
+                } else if (level_choice == '2') {
+                    currentLevel = 2; currentScreen = LEVEL; break;
+                } else if (level_choice == 'q' || level_choice == 'Q') {
+                    currentScreen = MAIN_MENU; break;
+                }
+                // else: ignore and keep waiting
+            }
+        }
+
+        else if (currentScreen == LEVEL) {
+            // Draw once to avoid flicker
+            ClearScreen();
+            switch (currentLevel) {
+                case 1: Level1Map(); break;
+                case 2: /* Level2Map(); */ break;
+                default: break;
+            }
+
+            // Inner loop: wait for commands; only redraw on changes
+            for (;;) {
+                char c = read_key_filtered();
+                if (c == 'Q' || c == 'q') {           // back to main
+                    currentScreen = MAIN_MENU; break;
+                } else if (c == 'B' || c == 'b') {    // back to level select
+                    currentScreen = STARTGAME; break;
+                } else {
+                    // TODO: handle gameplay (move, push, etc.)
+                }
+            }
+        }
+    }
+
+    // Farewell screen
+    ClearScreen();
+    drawString(300, 300, "Goodbye!", 0xFFFFFF, 4);
+
+    // Echo loop
+    while (1) {
         char c = uart_getc();
-        //send back
         uart_sendc(c);
     }
 }
