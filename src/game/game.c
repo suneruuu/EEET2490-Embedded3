@@ -5,7 +5,7 @@
 #include "..\includes\color.h"
 #include "..\assets\images\mainmenu_bg.c"
 #include "..\assets\images\othermenu_bg.c"
-#include "..\assets\images\baba_is_you_level_hex.c"
+#include "..\assets\images\levelmenu.c"
 #include "map.c"
 
 typedef enum GameScreen
@@ -57,8 +57,8 @@ static void PrintLevel(void)
 {
     ClearScreen();
     drawImage(level, 0, 0, 800, 600);
-    drawString(180, 370, "1. Level 1", 0xF54927, 4);
-    drawString(180, 450, "2. Level 2", 0xF54927, 4);
+    drawString(180, 200, "1. Level 1", 0xF54927, 4);
+    drawString(180, 300, "2. Level 2", 0xF54927, 4);
     drawString(20, 560, "Press 1 or 2 to select level, or Q to return", 0xFFFFFF, 2);
 }
 
