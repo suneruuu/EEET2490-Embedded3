@@ -6,8 +6,10 @@
 #include "..\assets\images\mainmenu_bg.c"
 #include "..\assets\images\othermenu_bg.c"
 #include "..\assets\images\baba_is_you_level_hex.c"
+#include "map.c"
 
-typedef enum GameScreen {
+typedef enum GameScreen
+{
     MAIN_MENU,
     STARTGAME,
     LEVEL,
@@ -24,147 +26,202 @@ static void PrintCredits(void);
 static void PrintLevel(void);
 static void Level1Map(void);
 
+void *memset(void *s, int c, size_t n)
+{
+    unsigned char *ptr = s;
+    while (n--)
+    {
+        *ptr++ = (unsigned char)c;
+    }
+    return s;
+}
+
 // Filter CR/LF so they don't act like extra keypresses
-static char read_key_filtered(void) {
+static char read_key_filtered(void)
+{
     char c;
-    do { c = uart_getc(); } while (c == '\r' || c == '\n');
+    do
+    {
+        c = uart_getc();
+    } while (c == '\r' || c == '\n');
     return c;
 }
 
-static void ClearScreen(void) {
+static void ClearScreen(void)
+{
     // Opaque black (ARGB)
     drawRectARGB32(0, 0, 800, 600, 0xFF000000, 1);
 }
 
-static void Level1Map(void) {
-    // Simple placeholder layout (rects)
-    drawRectARGB32(200,  20, 600, 250, 0x000000CC, 2);
-    drawRectARGB32(225,  50, 575, 250, 0x000000, 2);
-    drawRectARGB32(100, 250, 700, 550, 0x000000CC, 2);
-    drawRectARGB32(225, 250, 375, 275, 0x000000, 2);
-    drawRectARGB32(125, 275, 375, 525, 0x000000, 2);
-    drawRectARGB32(350, 350, 450, 450, 0x000000, 2);
-    drawRectARGB32(425, 275, 675, 525, 0x000000, 2);
-
-    // Hints
-    drawString(20, 560, "B: Back  Q: Main Menu", 0xFFFFFF, 2);
-}
-
-static void PrintLevel(void) {
+static void PrintLevel(void)
+{
     ClearScreen();
     drawImage(level, 0, 0, 800, 600);
     drawString(180, 370, "1. Level 1", 0xF54927, 4);
     drawString(180, 450, "2. Level 2", 0xF54927, 4);
-    drawString(20,  560, "Press 1 or 2 to select level, or Q to return", 0xFFFFFF, 2);
+    drawString(20, 560, "Press 1 or 2 to select level, or Q to return", 0xFFFFFF, 2);
 }
 
-static void PrintMainMenu(void) {
+static void PrintMainMenu(void)
+{
     ClearScreen();
     drawImage(MainMenu_bgbaba_bg, 0, 0, 800, 600);
-    drawString(180, 250, "1. Start Game",   0xFF80A0, 4);
+    drawString(180, 250, "1. Start Game", 0xFF80A0, 4);
     drawString(180, 310, "2. Instructions", 0xFF80A0, 4);
-    drawString(180, 370, "3. Options",      0xFF80A0, 4);
-    drawString(180, 430, "4. Credits",      0xFF80A0, 4);
-    drawString(180, 490, "5. Quit",         0xFF80A0, 4);
+    drawString(180, 370, "3. Options", 0xFF80A0, 4);
+    drawString(180, 430, "4. Credits", 0xFF80A0, 4);
+    drawString(180, 490, "5. Quit", 0xFF80A0, 4);
 }
 
-static void PrintInstructions(void) {
+static void PrintInstructions(void)
+{
     ClearScreen();
     drawImage(othermenu_bg, 0, 0, 800, 600);
-    drawString(80,  50, "====================", 0xFF80A0, 4);
-    drawString(220, 100, "HOW TO PLAY",         0xFF80A0, 4);
+    drawString(80, 50, "====================", 0xFF80A0, 4);
+    drawString(220, 100, "HOW TO PLAY", 0xFF80A0, 4);
     drawString(80, 150, "====================", 0xFF80A0, 4);
 
-    drawString(50, 220, "1. Rules are defined by text blocks.",         0xFF80A0, 2);
-    drawString(50, 260, "2. 'BABA IS YOU' means you control Baba.",     0xFF80A0, 2);
-    drawString(50, 310, "3. 'ROCK IS PUSH' lets you push rocks.",       0xFF80A0, 2);
-    drawString(50, 360, "4. Touch a 'FLAG IS WIN' flag to win.",        0xFF80A0, 2);
-    drawString(50, 410, "5. Move text blocks to change rules.",         0xFF80A0, 2);
-
-    drawString(50, 560, "Press any key to return to the main menu.",    0xFF80A0, 2);
-}
-
-static void PrintCredits(void) {
-    ClearScreen();
-    drawImage(othermenu_bg, 0, 0, 800, 600);
-    drawString(80,  50, "====================", 0xFF80A0, 4);
-    drawString(220, 100, "CREDITS",             0xFF80A0, 4);
-    drawString(80, 150, "====================", 0xFF80A0, 4);
-
-    drawString(50, 220, "A game by: Arvi Teikari", 0xFF80A0, 2);
-    drawString(50, 250, "Made with: C and QEMU",   0xFF80A0, 2);
+    drawString(50, 220, "1. Rules are defined by text blocks.", 0xFF80A0, 2);
+    drawString(50, 260, "2. 'BABA IS YOU' means you control Baba.", 0xFF80A0, 2);
+    drawString(50, 310, "3. 'ROCK IS PUSH' lets you push rocks.", 0xFF80A0, 2);
+    drawString(50, 360, "4. Touch a 'FLAG IS WIN' flag to win.", 0xFF80A0, 2);
+    drawString(50, 410, "5. Move text blocks to change rules.", 0xFF80A0, 2);
 
     drawString(50, 560, "Press any key to return to the main menu.", 0xFF80A0, 2);
 }
 
-int main(void) {
+static void PrintCredits(void)
+{
+    ClearScreen();
+    drawImage(othermenu_bg, 0, 0, 800, 600);
+    drawString(80, 50, "====================", 0xFF80A0, 4);
+    drawString(220, 100, "CREDITS", 0xFF80A0, 4);
+    drawString(80, 150, "====================", 0xFF80A0, 4);
+
+    drawString(50, 220, "A game by: Arvi Teikari", 0xFF80A0, 2);
+    drawString(50, 250, "Made with: C and QEMU", 0xFF80A0, 2);
+
+    drawString(50, 560, "Press any key to return to the main menu.", 0xFF80A0, 2);
+}
+
+int main(void)
+{
     framebf_init();
 
     GameScreen currentScreen = MAIN_MENU;
     int currentLevel = 0;
 
-    while (currentScreen != QUIT) {
+    while (currentScreen != QUIT)
+    {
 
-        if (currentScreen == MAIN_MENU) {
+        if (currentScreen == MAIN_MENU)
+        {
             PrintMainMenu();
-            for (;;) {
+            for (;;)
+            {
                 char choice = read_key_filtered();
-                if (choice == '1') { currentScreen = STARTGAME; break; }
-                if (choice == '2') { currentScreen = INSTRUCTIONS; break; }
-                if (choice == '3') { 
+                if (choice == '1')
+                {
+                    currentScreen = STARTGAME;
+                    break;
+                }
+                if (choice == '2')
+                {
+                    currentScreen = INSTRUCTIONS;
+                    break;
+                }
+                if (choice == '3')
+                {
                     drawString(50, 520, "Options... (placeholder)", 0xFFFFFF, 3);
                     continue;
                 }
-                if (choice == '4') { currentScreen = CREDITS; break; }
-                if (choice == '5') { currentScreen = QUIT; break; }
+                if (choice == '4')
+                {
+                    currentScreen = CREDITS;
+                    break;
+                }
+                if (choice == '5')
+                {
+                    currentScreen = QUIT;
+                    break;
+                }
                 // else ignore invalid keys and keep waiting
             }
         }
 
-        else if (currentScreen == INSTRUCTIONS) {
+        else if (currentScreen == INSTRUCTIONS)
+        {
             PrintInstructions();
             (void)read_key_filtered();
             currentScreen = MAIN_MENU;
         }
 
-        else if (currentScreen == CREDITS) {
+        else if (currentScreen == CREDITS)
+        {
             PrintCredits();
             (void)read_key_filtered();
             currentScreen = MAIN_MENU;
         }
 
-        else if (currentScreen == STARTGAME) {
+        else if (currentScreen == STARTGAME)
+        {
             PrintLevel();
-            for (;;) {
+            for (;;)
+            {
                 char level_choice = read_key_filtered();
-                if (level_choice == '1') {
-                    currentLevel = 1; currentScreen = LEVEL; break;
-                } else if (level_choice == '2') {
-                    currentLevel = 2; currentScreen = LEVEL; break;
-                } else if (level_choice == 'q' || level_choice == 'Q') {
-                    currentScreen = MAIN_MENU; break;
+                if (level_choice == '1')
+                {
+                    currentLevel = 1;
+                    currentScreen = LEVEL;
+                    break;
+                }
+                else if (level_choice == '2')
+                {
+                    currentLevel = 2;
+                    currentScreen = LEVEL;
+                    break;
+                }
+                else if (level_choice == 'q' || level_choice == 'Q')
+                {
+                    currentScreen = MAIN_MENU;
+                    break;
                 }
                 // else: ignore and keep waiting
             }
         }
 
-        else if (currentScreen == LEVEL) {
+        else if (currentScreen == LEVEL)
+        {
             // Draw once to avoid flicker
             ClearScreen();
-            switch (currentLevel) {
-                case 1: Level1Map(); break;
-                case 2: /* Level2Map(); */ break;
-                default: break;
+            switch (currentLevel)
+            {
+            case 1:
+                Level1Map();
+                break;
+            case 2:
+                Level2Map();
+                break;
+            default:
+                break;
             }
 
             // Inner loop: wait for commands; only redraw on changes
-            for (;;) {
+            for (;;)
+            {
                 char c = read_key_filtered();
-                if (c == 'Q' || c == 'q') {           // back to main
-                    currentScreen = MAIN_MENU; break;
-                } else if (c == 'B' || c == 'b') {    // back to level select
-                    currentScreen = STARTGAME; break;
-                } else {
+                if (c == 'Q' || c == 'q')
+                { // back to main
+                    currentScreen = MAIN_MENU;
+                    break;
+                }
+                else if (c == 'B' || c == 'b')
+                { // back to level select
+                    currentScreen = STARTGAME;
+                    break;
+                }
+                else
+                {
                     // TODO: handle gameplay (move, push, etc.)
                 }
             }
@@ -176,7 +233,8 @@ int main(void) {
     drawString(300, 300, "Goodbye!", 0xFFFFFF, 4);
 
     // Echo loop
-    while (1) {
+    while (1)
+    {
         char c = uart_getc();
         uart_sendc(c);
     }
