@@ -57,8 +57,8 @@ static void PrintLevel(void)
 {
     ClearScreen();
     drawImage(level, 0, 0, 800, 600);
-    drawString(180, 200, "1. Level 1", 0xF54927, 4);
-    drawString(180, 300, "2. Level 2", 0xF54927, 4);
+    drawString(100, 50, "1. Level 1", 0xF54927, 3);
+    drawString(450, 50, "2. Level 2", 0xF54927, 3);
     drawString(20, 560, "Press 1 or 2 to select level, or Q to return", 0xFFFFFF, 2);
 }
 
