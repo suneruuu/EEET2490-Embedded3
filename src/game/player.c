@@ -8,6 +8,8 @@ static int playerY;
 static char lastMove = 's';
 static int animateFrame = 0;
 static int animateCounter = 0;
+static int isMoving = 0;  
+
 void drawPlayer(void);
 
 static void restoreTile(int tileX, int tileY) {
@@ -30,38 +32,60 @@ void initPlayer(int startX, int startY) {
     lastMove = 's';
     animateFrame = 0;
     animateCounter = 0;
+    isMoving = 0;
     drawPlayer();
 }
 
 void drawPlayer(void) {
     Frame f;
-    if (lastMove == 'd') f = BABA_WALK_RIGHT[animateFrame];
-    else if (lastMove == 'a') f = BABA_WALK_LEFT[animateFrame];
-    else if (lastMove == 'w') f = BABA_WALK_UP[animateFrame];
-    else f = BABA_WALK_DOWN[animateFrame];
 
-    drawSpriteTile(f.x, f.y, TILE_SIZE, TILE_SIZE,
-                   playerX * TILE_SIZE, playerY * TILE_SIZE,
-                   SHEET_WIDTH);
+    if (!isMoving) {
+        // Show idle frame if not moving
+        f = BABA_IDLE;
+    } else {
+        // select walk frame set based on lastMove
+        if (lastMove == 'd' || lastMove == 'D') {
+            f = BABA_WALK_RIGHT[animateFrame % 2];
+        } else if (lastMove == 'a' || lastMove == 'A') {
+            f = BABA_WALK_LEFT[animateFrame % 2];
+        } else if (lastMove == 'w' || lastMove == 'W') {
+            f = BABA_WALK_UP[animateFrame % 2];
+        } else {
+            f = BABA_WALK_DOWN[animateFrame % 2];
+        }
+    }
+
+    // Draw using ARGB sprite drawing function that respects alpha
+    drawSpriteARGB32(f.data, f.width, f.height, playerX * TILE_SIZE, playerY * TILE_SIZE);
 }
 
 void movePlayer(char input) {
     int newX = playerX;
     int newY = playerY;
+    isMoving = 0; // reset each frame
 
-    if (input == 'w' || input == 'W') { newY--; lastMove = 'w'; }
-    else if (input == 's' || input == 'S') { newY++; lastMove = 's'; }
-    else if (input == 'a' || input == 'A') { newX--; lastMove = 'a'; }
-    else if (input == 'd' || input == 'D') { newX++; lastMove = 'd'; }
+    if (input == 'w' || input == 'W') { newY--; lastMove = 'w'; isMoving = 1; }
+    else if (input == 's' || input == 'S') { newY++; lastMove = 's'; isMoving = 1; }
+    else if (input == 'a' || input == 'A') { newX--; lastMove = 'a'; isMoving = 1; }
+    else if (input == 'd' || input == 'D') { newX++; lastMove = 'd'; isMoving = 1; }
+    else {
+        // Not a movement key → stay idle
+        drawPlayer();
+        return;
+    }
 
-    // Bounds check
+    // Bounds check (map width 32, height 24)
     if (newX < 0 || newX >= 32 || newY < 0 || newY >= 24) return;
 
-    char tile = map[newY][newX];
+    // Safety: disallow movement into bottom UI region
     if (newY >= 21) return;
+
+    char tile = map[newY][newX];
+
     // Block only solid walls
     if (tile == 'W') return;
 
+    // Restore the tile we are leaving
     restoreTile(playerX, playerY);
 
     // Update position
@@ -75,5 +99,6 @@ void movePlayer(char input) {
         animateFrame = (animateFrame + 1) % 2;
     }
 
+    // Draw at the new position
     drawPlayer();
 }

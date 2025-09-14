@@ -3,24 +3,32 @@
 
 #include "framebf.h"
 
-#define TILE_SIZE 25
-#define SHEET_WIDTH 1156  
+#define TILE_SIZE 25  
 
 typedef struct {
-    int x;
-    int y;
+    const unsigned long* data;
+    int width;
+    int height;
 } Frame;
 
+// Sprites
+extern const unsigned long sprite00[];
+extern const unsigned long sprite01[];
+extern const unsigned long sprite02[];
+extern const unsigned long sprite03[];
+extern const unsigned long sprite04[];
+extern const unsigned long sprite05[];
+extern const unsigned long sprite06[];
+extern const unsigned long sprite07[];
+
+// Animations
+extern const Frame BABA_IDLE;
 extern const Frame BABA_WALK_RIGHT[2];
+extern const Frame BABA_WALK_DOWN[2];
 extern const Frame BABA_WALK_LEFT[2];
 extern const Frame BABA_WALK_UP[2];
-extern const Frame BABA_WALK_DOWN[2];
-// Spritesheet
-extern const unsigned long spritesheet[];
-extern const unsigned long* spritesheetallArray[];
-extern const int spritesheetallArray_LEN;
 
-void drawSpriteTile(int srcX, int srcY, int tileW, int tileH,
-                    int destX, int destY, int sheetW);
+void drawSpriteARGB32(const unsigned long* sprite, int w, int h,
+                      int posX, int posY);
 
 #endif
