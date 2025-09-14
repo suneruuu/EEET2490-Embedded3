@@ -7,6 +7,7 @@
 #include "..\assets\images\othermenu_bg.c"
 #include "..\assets\images\levelmenu.c"
 #include "map.c"
+#include "player.c"
 
 typedef enum GameScreen
 {
@@ -24,7 +25,20 @@ static void PrintMainMenu(void);
 static void PrintInstructions(void);
 static void PrintCredits(void);
 static void PrintLevel(void);
-static void Level1Map(void);
+//player
+void initPlayer(int startX, int startY);
+void drawPlayer(void);
+void movePlayer(char input);
+//map
+#ifndef MAP_H
+#define MAP_H
+
+extern char map[24][32];
+void loadLevel1(void);
+void loadLevel2(void);
+void drawMap(void);
+
+#endif
 
 void *memset(void *s, int c, size_t n)
 {
@@ -197,15 +211,16 @@ int main(void)
             switch (currentLevel)
             {
             case 1:
-                Level1Map();
+                LoadLevel1();
                 break;
             case 2:
-                Level2Map();
+                LoadLevel2();
                 break;
             default:
                 break;
             }
-
+            drawMap();
+            initPlayer(2,2);
             // Inner loop: wait for commands; only redraw on changes
             for (;;)
             {
@@ -222,7 +237,7 @@ int main(void)
                 }
                 else
                 {
-                    // TODO: handle gameplay (move, push, etc.)
+                    movePlayer(c);
                 }
             }
         }

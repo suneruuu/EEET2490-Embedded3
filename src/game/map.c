@@ -1,3 +1,4 @@
+#include "..\includes\framebf.h"
 // Define size_t manually for bare-metal
 typedef unsigned long size_t;
 
@@ -12,9 +13,19 @@ void *memcpy(void *dest, const void *src, size_t n)
     return dest;
 }
 
-static void Level1Map(void)
+void *memset(void *s, int c, unsigned long n) {
+    unsigned char *p = s;
+    while (n--) {
+        *p++ = (unsigned char)c;
+    }
+    return s;
+}
+
+char map[24][32]; // accessible from player.c
+
+void LoadLevel1(void)
 {
-    char map[24][32] = {
+    char tmp[24][32] = {
         {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
         {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
         {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'W', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'W', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
@@ -40,25 +51,12 @@ static void Level1Map(void)
         {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
         {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
     };
-
-    for (int i = 0; i < 24; i++)
-    {
-        for (int j = 0; j < 32; j++)
-        {
-            if (map[i][j] == 'W')
-            {
-                int x = j * 25;                                      // X position for the rectangle (25 pixels per cell)
-                int y = i * 25;                                      // Y position for the rectangle (25 pixels per cell)
-                drawRectARGB32(x, y, x + 25, y + 25, 0x000000CC, 2); // Draw wall with blue color
-            }
-        }
-    }
-    drawString(20, 560, "B: Back  Q: Main Menu", 0xFFFFFF, 2);
+    memcpy(map, tmp, sizeof(tmp));
 }
 
-static void Level2Map(void)
+void LoadLevel2(void)
 {
-    char map[24][32] = {
+    char tmp[24][32] = {
         {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
         {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
         {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'W', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'W', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
@@ -80,18 +78,22 @@ static void Level2Map(void)
         {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
         {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
         {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'}};
+    memcpy(map, tmp, sizeof(tmp));
+}
 
+void drawMap(void)
+{
     for (int i = 0; i < 24; i++)
     {
         for (int j = 0; j < 32; j++)
         {
             if (map[i][j] == 'W')
             {
-                int x = j * 25;                                      // X position for the rectangle (25 pixels per cell)
-                int y = i * 25;                                      // Y position for the rectangle (25 pixels per cell)
-                drawRectARGB32(x, y, x + 25, y + 25, 0x000000CC, 2); // Draw wall with blue color
+                int x = j * 25;
+                int y = i * 25;
+                drawRectARGB32(x, y, x + 25, y + 25, 0x000000CC, 2);
             }
         }
     }
-    drawString(20, 560, "B: Back  Q: Main Menu", 0xFFFFFF, 2);
+    drawString(20, 560, "WASD: Move  |  B: Back  |  Q: Main Menu", 0xFFFFFF, 2);
 }

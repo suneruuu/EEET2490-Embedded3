@@ -1,4 +1,4 @@
-#include "framebf.h"
+#include "..\includes\framebf.h"
 
 // from map.c
 extern char map[24][32];
@@ -6,6 +6,7 @@ void drawMap(void);
 
 static int playerX;
 static int playerY;
+void drawPlayer(void);
 
 void initPlayer(int startX, int startY)
 {
@@ -31,6 +32,8 @@ void movePlayer(char input)
     else if (input == 'a' || input == 'A') newX--;
     else if (input == 'd' || input == 'D') newX++;
 
+    // Bounds check (prevent crash when moving outside map)
+    if (newX < 0 || newX >= 32 || newY < 0 || newY >= 24) return;
     if (map[newY][newX] == 'W') return; // blocked by wall
 
     // redraw map + player

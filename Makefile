@@ -26,6 +26,7 @@ uart0_build: ./library/uart0.c
 	aarch64-none-elf-gcc $(GCCFLAGS) -c ./src/boot.S -o ./build/boot.o
 
 ./build/%.o: ./src/%.c
+	@if not exist "$(dir $@)" mkdir "$(dir $@)"
 	aarch64-none-elf-gcc $(GCCFLAGS) -c $< -o $@
 
 ./build/game.o: ./src/game/game.c
