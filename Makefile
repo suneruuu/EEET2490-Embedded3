@@ -1,6 +1,6 @@
 #--------------------------------------Makefile-------------------------------------
 
-CFILES = $(filter-out ./src/game/game.c, $(wildcard ./src/*.c ./src/game/*.c))
+CFILES = $(filter-out ./src/game/game.c, $(wildcard ./src/*.c ./src/game/*.c ./assets/images/*.c))
 OFILES = $(CFILES:./src/%.c=./build/%.o)
 GCCFLAGS = -Wall -O2 -ffreestanding -nostdinc -nostdlib -I./includes
 
@@ -9,7 +9,7 @@ uart1: clean uart1_build kernel8.img run1
 uart0: clean uart0_build kernel8.img run0
 
 # Add a target for building game.img
-game.img: ./build/boot.o ./build/uart.o ./build/game.o ./build/framebf.o ./build/mbox.o ./build/game/map.o ./build/game/player.o ./build/game/sprites.o
+game.img: ./build/boot.o ./build/uart.o ./build/game.o ./build/framebf.o ./build/mbox.o ./build/game/map.o ./build/game/player.o ./build/game/sprites.o 
 	aarch64-none-elf-ld -nostdlib $^ -T ./src/link.ld -o ./build/game.elf
 	aarch64-none-elf-objcopy -O binary ./build/game.elf ./build/game.img
 

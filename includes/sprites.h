@@ -3,7 +3,7 @@
 
 #include "framebf.h"
 
-#define TILE_SIZE 32
+#define TILE_SIZE 25
 #define SHEET_WIDTH 1156  
 
 typedef struct {

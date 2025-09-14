@@ -5,6 +5,7 @@
 
 #define MAP_WIDTH 32
 #define MAP_HEIGHT 24
+#define TILE_SIZE 25
 
 extern char map[MAP_HEIGHT][MAP_WIDTH];  // declaration only
 

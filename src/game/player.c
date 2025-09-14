@@ -16,14 +16,15 @@ static void restoreTile(int tileX, int tileY) {
     int y = tileY * TILE_SIZE;
 
     if (tile == 'W') {
-        drawRectARGB32(x, y, x + TILE_SIZE, y + TILE_SIZE, 0x000000CC, 2); // wall
+        drawRectARGB32(x, y, x + TILE_SIZE, y + TILE_SIZE, 0x000000CC, 2); // solid wall
+    } else if (tile == 'P') {
+        drawRectARGB32(x, y, x + TILE_SIZE, y + TILE_SIZE, 0x0000CC99, 2); // passable wall
     } else {
         drawRectARGB32(x, y, x + TILE_SIZE, y + TILE_SIZE, 0x00000000, 1); // floor
     }
 }
 
-void initPlayer(int startX, int startY)
-{
+void initPlayer(int startX, int startY) {
     playerX = startX;
     playerY = startY;
     lastMove = 's';
@@ -32,8 +33,7 @@ void initPlayer(int startX, int startY)
     drawPlayer();
 }
 
-void drawPlayer(void)
-{
+void drawPlayer(void) {
     Frame f;
     if (lastMove == 'd') f = BABA_WALK_RIGHT[animateFrame];
     else if (lastMove == 'a') f = BABA_WALK_LEFT[animateFrame];
@@ -45,8 +45,7 @@ void drawPlayer(void)
                    SHEET_WIDTH);
 }
 
-void movePlayer(char input)
-{
+void movePlayer(char input) {
     int newX = playerX;
     int newY = playerY;
 
@@ -55,14 +54,20 @@ void movePlayer(char input)
     else if (input == 'a' || input == 'A') { newX--; lastMove = 'a'; }
     else if (input == 'd' || input == 'D') { newX++; lastMove = 'd'; }
 
-    // Bounds check (prevent crash when moving outside map)
+    // Bounds check
     if (newX < 0 || newX >= 32 || newY < 0 || newY >= 24) return;
-    // if (map[newY][newX] == 'W') return; blocked by wall, this part can be used later for some types of wall that the player cant cross
+
+    char tile = map[newY][newX];
+    if (newY >= 21) return;
+    // Block only solid walls
+    if (tile == 'W') return;
 
     restoreTile(playerX, playerY);
+
     // Update position
     playerX = newX;
     playerY = newY;
+
     // Animate: flip every 4 moves
     animateCounter++;
     if (animateCounter >= 4) {

@@ -1,4 +1,5 @@
 #include "..\includes\sprites.h"
+#include "..\assets\images\spritesheet.c"
 
 // Define frames
 const Frame BABA_IDLE = {0, 0};
@@ -8,6 +9,8 @@ const Frame BABA_WALK_UP[2]    = {{0,48}, {24,48}};
 const Frame BABA_WALK_DOWN[2]  = {{0,72}, {24,72}};
 
 extern const unsigned long spritesheet[]; 
+extern const unsigned long* spritesheetallArray[];
+extern const int spritesheetallArray_LEN;
 
 void drawSpriteTile(int srcX, int srcY, int w, int h,
                     int dstX, int dstY, int sheetWidth)

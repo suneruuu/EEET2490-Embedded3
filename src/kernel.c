@@ -6,7 +6,6 @@
 #include "../assets/images/meme.c"
 #include "../assets/images/biome.c"
 #include "../assets/images/meme2.c"
-#include "game.c"
 
 #define Welcome_msg \
 "\n"\

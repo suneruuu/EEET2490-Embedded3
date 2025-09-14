@@ -215,7 +215,7 @@ int main(void)
                 break;
             }
             drawMap();
-            initPlayer(15,5);
+            initPlayer(13,7);
             // Inner loop: wait for commands; only redraw on changes
             for (;;)
             {
