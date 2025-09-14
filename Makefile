@@ -9,7 +9,7 @@ uart1: clean uart1_build kernel8.img run1
 uart0: clean uart0_build kernel8.img run0
 
 # Add a target for building game.img
-game.img: ./build/boot.o ./build/uart.o ./build/game.o ./build/framebf.o ./build/mbox.o
+game.img: ./build/boot.o ./build/uart.o ./build/game.o ./build/framebf.o ./build/mbox.o ./build/game/map.o ./build/game/player.o ./build/game/sprites.o
 	aarch64-none-elf-ld -nostdlib $^ -T ./src/link.ld -o ./build/game.elf
 	aarch64-none-elf-objcopy -O binary ./build/game.elf ./build/game.img
 
@@ -30,6 +30,15 @@ uart0_build: ./library/uart0.c
 	aarch64-none-elf-gcc $(GCCFLAGS) -c $< -o $@
 
 ./build/game.o: ./src/game/game.c
+	aarch64-none-elf-gcc $(GCCFLAGS) -c $< -o $@
+
+./build/game/map.o: ./src/game/map.c
+	aarch64-none-elf-gcc $(GCCFLAGS) -c $< -o $@
+
+./build/game/player.o: ./src/game/player.c
+	aarch64-none-elf-gcc $(GCCFLAGS) -c $< -o $@
+
+./build/game/sprites.o: ./src/game/sprites.c
 	aarch64-none-elf-gcc $(GCCFLAGS) -c $< -o $@
 
 kernel18.img: ./build/boot.o ./build/uart.o $(OFILES)

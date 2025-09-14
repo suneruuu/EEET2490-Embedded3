@@ -6,8 +6,8 @@
 #include "..\assets\images\mainmenu_bg.c"
 #include "..\assets\images\othermenu_bg.c"
 #include "..\assets\images\levelmenu.c"
-#include "map.c"
-#include "player.c"
+#include "map.h"
+#include "player.h"
 
 typedef enum GameScreen
 {
@@ -26,9 +26,14 @@ static void PrintInstructions(void);
 static void PrintCredits(void);
 static void PrintLevel(void);
 //player
+#ifndef PLAYER_H
+#define PLAYER_H
+
 void initPlayer(int startX, int startY);
 void drawPlayer(void);
 void movePlayer(char input);
+
+#endif
 //map
 #ifndef MAP_H
 #define MAP_H

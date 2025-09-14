@@ -1,4 +1,5 @@
 #include "..\includes\framebf.h"
+#include "map.h"
 // Define size_t manually for bare-metal
 typedef unsigned long size_t;
 
