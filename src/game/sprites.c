@@ -47,10 +47,24 @@ void drawSpriteARGB32(const unsigned long *sprite, int w, int h, int dstX, int d
     for (int y = 0; y < h; y++) {
         for (int x = 0; x < w; x++) {
             unsigned long color = sprite[y * w + x];
-            if ((color >> 24) != 0x00) { // only draw non-transparent pixels
-                drawPixelARGB32(dstX + x, dstY + y, color);
+
+            // unpack 0xRRGGBBAA
+            unsigned char r = (color >> 24) & 0xFF;
+            unsigned char g = (color >> 16) & 0xFF;
+            unsigned char b = (color >>  8) & 0xFF;
+            unsigned char a =  color        & 0xFF;
+
+            if (a == 0) continue; // skip transparent
+
+            // only allow pure white or pure black
+            if (r == 255 && g == 255 && b == 255) {
+                drawPixelARGB32(dstX + x, dstY + y, 0xFFFFFFFF); // white body
+            } else if (r == 0 && g == 0 && b == 0) {
+                drawPixelARGB32(dstX + x, dstY + y, 0x000000FF); // black eyes
             }
+            // else: skip background and other colors
         }
     }
 }
+
 
