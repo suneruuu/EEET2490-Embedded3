@@ -34,7 +34,7 @@ void movePlayer(char input)
 
     // Bounds check (prevent crash when moving outside map)
     if (newX < 0 || newX >= 32 || newY < 0 || newY >= 24) return;
-    if (map[newY][newX] == 'W') return; // blocked by wall
+    // if (map[newY][newX] == 'W') return; blocked by wall, this part can be used later for some types of wall that the player cant cross
 
     // redraw map + player
     drawMap();

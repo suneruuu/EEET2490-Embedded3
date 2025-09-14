@@ -40,16 +40,6 @@ void drawMap(void);
 
 #endif
 
-void *memset(void *s, int c, size_t n)
-{
-    unsigned char *ptr = s;
-    while (n--)
-    {
-        *ptr++ = (unsigned char)c;
-    }
-    return s;
-}
-
 // Filter CR/LF so they don't act like extra keypresses
 static char read_key_filtered(void)
 {
@@ -220,7 +210,7 @@ int main(void)
                 break;
             }
             drawMap();
-            initPlayer(2,2);
+            initPlayer(15,5);
             // Inner loop: wait for commands; only redraw on changes
             for (;;)
             {
