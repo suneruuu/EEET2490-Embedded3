@@ -24,7 +24,8 @@ CC = aarch64-none-elf-gcc
 LD = aarch64-none-elf-ld
 OBJCOPY = aarch64-none-elf-objcopy
 
-SRC_CFILES = $(wildcard ./src/*.c) $(wildcard ./src/*/*.c)
+# Source files including game assets
+SRC_CFILES = $(wildcard ./src/*.c) $(wildcard ./src/*/*.c) $(wildcard ./assets/images/*.c)
 LIB_CFILES = $(wildcard ./library/*.c) $(wildcard ./library/*/*.c)
 # Avoid duplicate symbols and double-compiled UARTs
 LIB_CFILES := $(filter-out ./library/peripheral/uart0.c ./library/peripheral/uart1.c,$(LIB_CFILES))
@@ -40,10 +41,17 @@ GCCFLAGS = -Wall -O2 -ffreestanding -nostdinc -nostdlib -MMD -MP -I.
 all:
 	"$(MAKE)" clean
 	"$(MAKE)" uart1_build
-	"$(MAKE)" kernel8.img
-	"$(MAKE)" run1
+	"$(MAKE)" game.img
+	"$(MAKE)" run_game
 uart1: uart1_build kernel8.img run1
 uart0: uart0_build kernel8.img run0
+
+# Game targets
+game: clean game.img run_game
+
+game.img: ./build/boot.o ./build/uart.o ./build/game.o ./build/framebf.o ./build/mbox.o ./build/game/map.o ./build/game/player.o ./build/game/sprites.o
+	$(LD) -nostdlib $^ -T ./src/link.ld -o ./build/game.elf
+	$(OBJCOPY) -O binary ./build/game.elf ./build/game.img
 
 uart1_build: ./library/peripheral/uart1.c
 	$(CC) $(GCCFLAGS) -c ./library/peripheral/uart1.c -o ./build/uart.o
@@ -66,6 +74,23 @@ uart0_build: ./library/peripheral/uart0.c
 	@$(MKDIR)
 	$(CC) $(GCCFLAGS) -c $< -o $@
 
+# Game-specific object file compilation
+./build/game.o: ./src/game/game.c
+	@$(MKDIR)
+	$(CC) $(GCCFLAGS) -c $< -o $@
+
+./build/game/map.o: ./src/game/map.c
+	@$(MKDIR)
+	$(CC) $(GCCFLAGS) -c $< -o $@
+
+./build/game/player.o: ./src/game/player.c
+	@$(MKDIR)
+	$(CC) $(GCCFLAGS) -c $< -o $@
+
+./build/game/sprites.o: ./src/game/sprites.c
+	@$(MKDIR)
+	$(CC) $(GCCFLAGS) -c $< -o $@
+
 kernel8.img: ./build/boot.o ./build/uart.o $(OFILES)
 	$(LD) -nostdlib ./build/boot.o ./build/uart.o $(OFILES) -T ./src/link.ld -o ./build/kernel8.elf
 	$(OBJCOPY) -O binary ./build/kernel8.elf ./build/kernel8.img
@@ -80,4 +105,7 @@ run1: kernel8.img
 run0: kernel8.img
 	qemu-system-aarch64 -M raspi3 -kernel ./build/kernel8.img -serial stdio
 
-.PHONY: all uart1 uart0 uart1_build uart0_build clean run1 run0
+run_game: game.img
+	qemu-system-aarch64 -M raspi3 -kernel ./build/game.img -serial null -serial stdio
+
+.PHONY: all uart1 uart0 uart1_build uart0_build clean run1 run0 game game.img run_game
