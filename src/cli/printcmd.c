@@ -34,7 +34,7 @@ void print_help_guide(void) {
     uart_puts("\n");
     print_usage("mode");
     print_color("mode ", YELLOW);
-    print_color("cli|text|img\n", HI_GREEN);
+    print_color("cli|text|img|game\n", HI_GREEN);
     print_color("Switch runtime mode\n", WHITE);
     uart_puts("\n");
 }
@@ -67,6 +67,7 @@ void print_handshake_guide(void) {
     print_color("Allow the user to turn on/off CTS/RTS handshaking on current UART if possible.\n", WHITE);
     uart_puts("\n");
 }
+
 
 void print_cmd_not_found(void) {
     print_color("COMMAND NOT FOUND!\n", RED);

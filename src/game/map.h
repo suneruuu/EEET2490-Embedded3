@@ -1,7 +1,7 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include "..\includes\framebf.h"
+#include "../../includes/framebf.h"
 
 #define MAP_WIDTH 32
 #define MAP_HEIGHT 24

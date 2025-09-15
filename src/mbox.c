@@ -1,8 +1,8 @@
 // -----------------------------------mbox.c -------------------------------------
-#include "../includes/mbox.h"
-#include "../includes/gpio.h"
-#include "../includes/uart1.h"
-#include "../includes/uart0.h"
+#include "../includes/library/mbox.h"
+#include "../includes/library/gpio.h"
+#include "../includes/peripheral/uart1.h"
+#include "../includes/peripheral/uart0.h"
 
 /* Mailbox Data Buffer (each element is 32-bit)*/
 /*

@@ -5,6 +5,7 @@
 #include "includes/peripheral/uart0.h"
 #include "includes/peripheral/uart1.h"
 #include "includes/library/mbox.h"
+#include "includes/game.h"
 
 #define CMD_LIST_SIZE (sizeof(cmd_list) / sizeof(Command))
 
@@ -104,10 +105,15 @@ void mode_cmd(char *arg) {
         chmod_to_img_mode();
         uart_puts("Switched to Image mode\n");
         handle_img_mode();
+    } else if (strcmp(arg, "game") == 0) {
+        chmod_to_game_mode();
+        uart_puts("Switched to Game mode\n");
+        start_game();
     } else {
-        uart_puts("Usage: mode cli|text|img\n");
+        uart_puts("Usage: mode cli|text|img|game\n");
     }
 }
+
 
 void execute_cmd(const char* input) {
     char cmd[64];

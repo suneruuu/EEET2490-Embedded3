@@ -1,3 +1,4 @@
+#pragma once
 #include "includes/library/gpio.h"
 
 /* Auxilary mini UART (UART1) registers */

@@ -1,7 +1,7 @@
 // ----------------------------------- framebf.c -------------------------------------
-#include "..\includes\mbox.h"
-#include "..\includes\uart1.h"
-#include "..\includes\uart0.h"
+#include "..\includes\library\mbox.h"
+#include "..\includes\peripheral\uart1.h"
+#include "..\includes\peripheral\uart0.h"
 #include "..\includes\font.h"
 
 //Use RGBA32 (32 bits for each pixel)

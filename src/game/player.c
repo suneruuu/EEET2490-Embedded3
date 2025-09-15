@@ -1,5 +1,5 @@
-#include "..\includes\framebf.h"
-#include "..\includes\sprites.h"
+#include "../../includes/framebf.h"
+#include "../../includes/sprites.h"
 #include "map.h"
 #include "player.h"
 

@@ -1,8 +1,8 @@
-build/framebf.o: src/framebf.c src/../includes/mbox.h \
- src/../includes/gpio.h src/../includes/peripheral/uart1.h \
- includes/library/gpio.h src/../includes/peripheral/uart0.h
-src/../includes/mbox.h:
-src/../includes/gpio.h:
-src/../includes/peripheral/uart1.h:
-includes/library/gpio.h:
-src/../includes/peripheral/uart0.h:
+build/framebf.o: src/framebf.c src/..\includes\library\mbox.h \
+ src/..\includes\library\gpio.h src/..\includes\peripheral\uart1.h \
+ src/..\includes\peripheral\uart0.h src/..\includes\font.h
+src/..\includes\library\mbox.h:
+src/..\includes\library\gpio.h:
+src/..\includes\peripheral\uart1.h:
+src/..\includes\peripheral\uart0.h:
+src/..\includes\font.h:

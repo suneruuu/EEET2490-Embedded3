@@ -1,11 +1,11 @@
-#include "..\includes\uart0.h"
-#include "..\includes\uart1.h"
-#include "..\includes\mbox.h"
-#include "..\includes\framebf.h"
-#include "..\includes\color.h"
-#include "..\assets\images\mainmenu_bg.c"
-#include "..\assets\images\othermenu_bg.c"
-#include "..\assets\images\levelmenu.c"
+#include "../../includes/peripheral/uart0.h"
+#include "../../includes/peripheral/uart1.h"
+#include "../../includes/library/mbox.h"
+#include "../../includes/framebf.h"
+#include "../../includes/color.h"
+#include "../../assets/images/mainmenu_bg.c"
+#include "../../assets/images/othermenu_bg.c"
+#include "../../assets/images/levelmenu.c"
 #include "map.h"
 #include "player.h"
 
@@ -113,7 +113,7 @@ static void PrintCredits(void)
     drawString(50, 560, "Press any key to return to the main menu.", 0xFF80A0, 2);
 }
 
-int main(void)
+void start_game(void)
 {
     framebf_init();
 
@@ -249,3 +249,4 @@ int main(void)
         uart_sendc(c);
     }
 }
+

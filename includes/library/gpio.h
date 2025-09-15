@@ -1,4 +1,5 @@
 // -----------------------------------gpio.h -------------------------------------
+#pragma once
 
 /* Raspberry Pi's peripheral physical address (MMIO_BASE) is 0xFE000000 in RPI4, 0x3F000000 in RPI3
 --> Select correct option to set the value properly 

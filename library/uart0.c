@@ -1,5 +1,5 @@
-#include "..\includes\uart0.h"
-#include "..\includes\mbox.h"
+#include "..\includes\peripheral\uart0.h"
+#include "..\includes\library\mbox.h"
 
 
 /**

@@ -25,10 +25,14 @@ LD = aarch64-none-elf-ld
 OBJCOPY = aarch64-none-elf-objcopy
 
 # Source files including game assets
-SRC_CFILES = $(wildcard ./src/*.c) $(wildcard ./src/*/*.c) $(wildcard ./assets/images/*.c)
+SRC_CFILES = $(wildcard ./src/*.c) $(wildcard ./src/*/*.c)
+# Exclude game_main.c from regular build since it has its own main function
+# Exclude src versions of files that are in library to avoid duplicates
+SRC_CFILES := $(filter-out ./src/game_main.c ./src/framebf.c ./src/mbox.c,$(SRC_CFILES))
+GAME_ASSETS = $(wildcard ./assets/images/*.c)
 LIB_CFILES = $(wildcard ./library/*.c) $(wildcard ./library/*/*.c)
-# Avoid duplicate symbols and double-compiled UARTs
-LIB_CFILES := $(filter-out ./library/peripheral/uart0.c ./library/peripheral/uart1.c,$(LIB_CFILES))
+# Avoid duplicate symbols and double-compiled UARTs and other duplicates
+LIB_CFILES := $(filter-out ./library/peripheral/uart0.c ./library/peripheral/uart1.c ./library/uart0.c ./library/uart1.c,$(LIB_CFILES))
 UTILS_CFILES = $(wildcard ./utils/*.c)
 
 SRC_OFILES = $(SRC_CFILES:./src/%.c=./build/%.o)
@@ -41,15 +45,17 @@ GCCFLAGS = -Wall -O2 -ffreestanding -nostdinc -nostdlib -MMD -MP -I.
 all:
 	"$(MAKE)" clean
 	"$(MAKE)" uart1_build
-	"$(MAKE)" game.img
-	"$(MAKE)" run_game
+	"$(MAKE)" kernel8.img
+	"$(MAKE)" run1
 uart1: uart1_build kernel8.img run1
 uart0: uart0_build kernel8.img run0
 
 # Game targets
-game: clean game.img run_game
+game: clean uart1_build game.img run_game
 
-game.img: ./build/boot.o ./build/uart.o ./build/game.o ./build/framebf.o ./build/mbox.o ./build/game/map.o ./build/game/player.o ./build/game/sprites.o
+GAME_ASSET_OFILES = $(GAME_ASSETS:./assets/images/%.c=./build/assets/%.o)
+
+game.img: ./build/boot.o ./build/uart.o ./build/game_main.o ./build/game.o ./build/framebf.o ./build/mbox.o ./build/game/map.o ./build/game/player.o ./build/game/sprites.o ./build/utils/string.o
 	$(LD) -nostdlib $^ -T ./src/link.ld -o ./build/game.elf
 	$(OBJCOPY) -O binary ./build/game.elf ./build/game.img
 
@@ -88,6 +94,16 @@ uart0_build: ./library/peripheral/uart0.c
 	$(CC) $(GCCFLAGS) -c $< -o $@
 
 ./build/game/sprites.o: ./src/game/sprites.c
+	@$(MKDIR)
+	$(CC) $(GCCFLAGS) -c $< -o $@
+
+# Game main compilation
+./build/game_main.o: ./src/game_main.c
+	@$(MKDIR)
+	$(CC) $(GCCFLAGS) -c $< -o $@
+
+# Game asset compilation
+./build/assets/%.o: ./assets/images/%.c
 	@$(MKDIR)
 	$(CC) $(GCCFLAGS) -c $< -o $@
 

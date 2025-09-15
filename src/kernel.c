@@ -3,9 +3,9 @@
 #include "includes/peripheral/uart0.h"
 #include "includes/cli/mode.h"
 #include "includes/cli/printcmd.h"
-#include "..\includes\mbox.h"
-#include "..\includes\framebf.h"
-#include "..\includes\color.h"
+#include "includes/library/mbox.h"
+#include "includes/framebf.h"
+#include "includes/color.h"
 
 void main()
 {

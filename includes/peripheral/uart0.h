@@ -1,3 +1,4 @@
+#pragma once
 #include "includes/library/gpio.h"
 
 /* PL011 UART (UART0) registers */

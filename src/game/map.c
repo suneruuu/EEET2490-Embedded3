@@ -1,10 +1,10 @@
-#include "..\includes\framebf.h"
+#include "../../includes/framebf.h"
 #include "map.h"
 
 // Define size_t manually for bare-metal
 typedef unsigned long size_t;
 
-void *memcpy(void *dest, const void *src, size_t n) {
+void *map_memcpy(void *dest, const void *src, size_t n) {
     unsigned char *d = dest;
     const unsigned char *s = src;
     while (n--) {
@@ -50,7 +50,7 @@ void LoadLevel1(void) {
         "                                ",
         "                                ",
     };
-    memcpy(map, tmp, sizeof(tmp));
+    map_memcpy(map, tmp, sizeof(tmp));
 }
 
 void LoadLevel2(void) {
@@ -80,7 +80,7 @@ void LoadLevel2(void) {
         "W                            W",
         "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
     };
-    memcpy(map, tmp, sizeof(tmp));
+    map_memcpy(map, tmp, sizeof(tmp));
 }
 
 void drawMap(void) {
