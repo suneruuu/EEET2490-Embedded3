@@ -61,7 +61,7 @@ void drawSpriteARGB32(const unsigned long *sprite, int w, int h, int dstX, int d
                 drawPixelARGB32(dstX + x, dstY + y, 0xFFFFFFFF); // white body
             } else if (r == 0 && g == 0 && b == 0) {
                 drawPixelARGB32(dstX + x, dstY + y, 0x000000FF); // black eyes
-            } 
+            }
             // else: skip background and other colors
         }
     }

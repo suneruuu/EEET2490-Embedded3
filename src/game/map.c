@@ -45,13 +45,13 @@ void LoadLevel1(void) {
         "  a b c                  d b e  ",
         "                                ",
         " QWWWWWWWWWWWWWWWWWWWWWWWWWWWWE ",
-        "               R                ",
-        "               R                ",
-        "               R                ",
-        "               R       Z        ",
-        "               R                ",
-        "               R                ",
-        "               R                ",
+        " FFFFFFFFFFFFFFRFFFFFFFFFFFFFFF ",
+        " FFFFFFFFFFFFFFRFFFFFFFFFFFFFFF ",
+        " FFFFFFFFFFFFFFRFFFFFFFFFFFFFFF ",
+        " FFFFFFFFFFFFFFRFFFFFFFZFFFFFFF ",
+        " FFFFFFFFFFFFFFRFFFFFFFFFFFFFFF ",
+        " FFFFFFFFFFFFFFRFFFFFFFFFFFFFFF ",
+        " FFFFFFFFFFFFFFRFFFFFFFFFFFFFFF ",
         " QWWWWWWWWWWWWWWWWWWWWWWWWWWWWE ",
         "                                ",
         "  g b f                  h b i  ",
@@ -69,33 +69,33 @@ void LoadLevel1(void) {
 }
 
 void LoadLevel2(void) {
-    char tmp[24][32] = {
-        "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
-        "W      B                     W",
-        "W   WWWWW                    W",
-        "W   W   W                    W",
-        "W P W   W         F          W",
-        "W   W   W                    W",
-        "W   W   WWWWWW               W",
-        "W   W                        W",
-        "W   W                        W",
-        "W                            W",
-        "W                            W",
-        "W                            W",
-        "W                            W",
-        "W                            W",
-        "W                            W",
-        "W                            W",
-        "W                            W",
-        "W                            W",
-        "W                            W",
-        "W                            W",
-        "W                            W",
-        "W                            W",
-        "W                            W",
-        "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
+    char tmp[MAP_HEIGHT][MAP_WIDTH] = {
+        "                                ",
+        "                                ",
+        "        QWWWWWWWWWWWWWWWWWWWWWE ",
+        "        W                     W ",
+        "        W   b                 W ",
+        "        W                     W ",
+        " QWWWWWWW            e        W ",
+        " WFFFFFFF                     W ",
+        " WFFdFFFF      Z              W ",
+        " WFFFFFFF                     W ",
+        " QWWWWWWWWWWWWWWWWWWWWWWWWWWWWE ",
+        "           W                  W ",
+        "    a      W   f              W ",
+        "    b      W   b              W ",
+        "    c      W   g              W ",
+        "           W                  W ",
+        "           QWWWWWWWWWWWWWWWWWWE ",
+        "                                ",
+        "                                ",
+        "                                ",
+        "                                ",
+        "                                ",
+        "                                ",
+        "                                "
     };
-    map_memcpy(map, tmp, sizeof(tmp));
+    map_memcpy(map, tmp, sizeof(map));
 }
 
 void drawSpriteARGB32Scaled(const unsigned long *sprite, int srcW, int srcH,
@@ -215,5 +215,5 @@ void drawMap(void) {
 
     // UI
     for (int x = 0; x < 800; x++) drawPixelARGB32(x, 550, 0xFFFFFFFF);
-    drawString(20, 560, " WASD: Move | B: Back | Q: Main Menu", 0xFFFFFF, 2);
+    drawString(20, 560, "     WASD: Move | B: Back | Q: Main Menu", 0xFFFFFF, 2);
 }

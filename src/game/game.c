@@ -25,25 +25,6 @@ static void PrintMainMenu(void);
 static void PrintInstructions(void);
 static void PrintCredits(void);
 static void PrintLevel(void);
-//player
-#ifndef PLAYER_H
-#define PLAYER_H
-
-void initPlayer(int startX, int startY);
-void drawPlayer(void);
-void movePlayer(char input);
-
-#endif
-//map
-#ifndef MAP_H
-#define MAP_H
-
-extern char map[24][32];
-void loadLevel1(void);
-void loadLevel2(void);
-void drawMap(void);
-
-#endif
 
 // Filter CR/LF so they don't act like extra keypresses
 static char read_key_filtered(void)
@@ -207,15 +188,17 @@ void start_game(void)
             {
             case 1:
                 LoadLevel1();
+                initPlayer(13,7);
                 break;
             case 2:
                 LoadLevel2();
+                initPlayer(22,12);
                 break;
             default:
                 break;
             }
             drawMap();
-            initPlayer(13,7);
+            drawPlayer();
             // Inner loop: wait for commands; only redraw on changes
             for (;;)
             {
