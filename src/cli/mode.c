@@ -9,7 +9,9 @@
 #include "includes/video_player.h"
 #include "includes/video_data.h"
 #include "includes/timer.h"
-#include "assets/images/hello.c"
+
+/* Image asset provided by printcmd.c compilation unit */
+extern const unsigned long hello[];
 
 static Mode current_mode = MODE_CLI;
 

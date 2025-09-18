@@ -194,64 +194,6 @@ void parseRules(void) {
             }
         }
     }
-    
-    // Look for horizontal rules (right to left) - adjacent text blocks
-    for (int y = 0; y < MAP_HEIGHT; y++) {
-        for (int x = MAP_WIDTH - 1; x >= 2; x--) {
-            char c1 = map[y][x];
-            char c2 = map[y][x - 1];
-            char c3 = map[y][x - 2];
-            
-            // Check for "cba" pattern (object IS subject) - adjacent text blocks
-            if (isTextBlock(c1) && isTextBlock(c2) && isTextBlock(c3)) {
-                ObjectType object = charToObjectType(c1);
-                ObjectType verb = charToObjectType(c2);
-                ObjectType subject = charToObjectType(c3);
-                
-                // Check if it's a valid rule pattern: Noun IS (Noun|Attribute)
-                if (isNoun(subject) && verb == OBJECT_IS && 
-                    (isNoun(object) || isAttribute(object))) {
-                    // Found a rule: subject IS object
-                    Rule rule;
-                    rule.subject = subject;
-                    rule.verb = verb;
-                    rule.object = object;
-                    rule.valid = 1;
-                    
-                    addRuleIfNew(rule);
-                }
-            }
-        }
-    }
-    
-    // Look for vertical rules (bottom to top) - adjacent text blocks
-    for (int y = MAP_HEIGHT - 1; y >= 2; y--) {
-        for (int x = 0; x < MAP_WIDTH; x++) {
-            char c1 = map[y][x];
-            char c2 = map[y - 1][x];
-            char c3 = map[y - 2][x];
-            
-            // Check for vertical "abc" pattern (subject IS object) - adjacent text blocks
-            if (isTextBlock(c1) && isTextBlock(c2) && isTextBlock(c3)) {
-                ObjectType subject = charToObjectType(c1);
-                ObjectType verb = charToObjectType(c2);
-                ObjectType object = charToObjectType(c3);
-                
-                // Check if it's a valid rule pattern: Noun IS (Noun|Attribute)
-                if (isNoun(subject) && verb == OBJECT_IS && 
-                    (isNoun(object) || isAttribute(object))) {
-                    // Found a rule: subject IS object
-                    Rule rule;
-                    rule.subject = subject;
-                    rule.verb = verb;
-                    rule.object = object;
-                    rule.valid = 1;
-                    
-                    addRuleIfNew(rule);
-                }
-            }
-        }
-    }
 }
 
 // Check if player is controlled by rules
