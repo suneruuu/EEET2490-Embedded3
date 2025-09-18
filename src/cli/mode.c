@@ -216,8 +216,10 @@ void handle_vid_mode(void) {
 
 void handle_text_mode(void) {
     framebf_init();
-    // print_name();
-    print_image();
+    print_name_img();
+    wait_msec(300);
+    print_welcome_msg();
+    
 }
 
 void handle_game_mode(void) {
@@ -226,7 +228,8 @@ void handle_game_mode(void) {
 
 void handle_img_mode(void) {
     framebf_init();
-    drawImage(hello, 0, 0, 800, 600);
+    //drawImage(hello, 0, 0, 800, 600);
+    print_image();
 }
 
 /* ---- Mode changing ---- */
