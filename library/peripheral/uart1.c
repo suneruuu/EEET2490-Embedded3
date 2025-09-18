@@ -16,6 +16,7 @@ void uart_init()
     AUX_MU_IER = 0;    // disable interrupts
     AUX_MU_IIR = 0xc6; // enable and clear FIFOs
     AUX_MU_BAUD = 270; // configure 115200 baud rate [system_clk_freq/(baud_rate*8) - 1]
+    // 270 = (250000000 / (115200 * 8)) - 1 = 270.4 - 1 ≈ 270
 
     /* Note: refer to page 11 of ARM Peripherals guide for baudrate configuration
     (system_clk_freq is 250MHz by default) */
@@ -160,7 +161,7 @@ void uart_set_baudrate(unsigned int baud)
     }
     // AUX_MU_BAUD = (system_clk / (baud * 8)) - 1
     // By default, system_clk = 250 MHz
-    unsigned int baud_reg = (25000000 / (baud * 8)) - 1;
+    unsigned int baud_reg = (250000000 / (baud * 8)) - 1;
 
     AUX_MU_CNTL = 0; // Disable Tx, Rx while changing baud
     AUX_MU_BAUD = baud_reg;

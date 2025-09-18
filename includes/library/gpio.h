@@ -5,7 +5,11 @@
 --> Select correct option to set the value properly 
 */
 
-#define RPI3 //enable when using RPI3 (QEMU emulation/ real board)
+#ifndef RPI3
+#ifndef RPI4
+#define RPI3 //default to RPI3 if neither is defined
+#endif
+#endif
 
 #ifdef RPI3 //RPI3
     #define MMIO_BASE       0x3F000000

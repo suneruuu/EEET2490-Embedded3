@@ -2,10 +2,15 @@
 #include "includes/utils/color.h"
 #include "includes/cli/printcmd.h"
 #include "includes/utils/string.h"
-#include "includes/peripheral/uart0.h"
-#include "includes/peripheral/uart1.h"
 #include "includes/library/mbox.h"
 #include "includes/game.h"
+
+// Include the correct UART header based on UART setting
+#if UART == 0
+#include "includes/peripheral/uart0.h"
+#else
+#include "includes/peripheral/uart1.h"
+#endif
 
 #define CMD_LIST_SIZE (sizeof(cmd_list) / sizeof(Command))
 
