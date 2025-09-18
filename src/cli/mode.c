@@ -212,8 +212,8 @@ void handle_vid_mode(void) {
 }
 
 void handle_text_mode(void) {
-    framebf_init();
-    print_name();
+    uart_init();
+    print_welcome_msg();
 }
 
 void handle_game_mode(void) {
