@@ -5,13 +5,42 @@
 #include "assets/images/meme.c"
 #include "assets/images/biome.c"
 #include "assets/images/meme2.c"
+#include "assets/images/hello.c"
+#include "assets/images/cinema.c"
+#include "includes\timer.h"
 
 
 #define name_msg1 "Ngo Minh Hieu - s3940891"
 #define name_msg2 "Nguyen Ngoc Huan - s3979896"
 #define name_msg3 "Nguyen Le Thuc Quynh - s3924993"
 #define name_msg4 "Ngo Duc Minh Quan - s3938194"
-
+#define Welcome_msg \
+"\n"\
+":::::::::: :::::::::: :::::::::: ::::::::::: ::::::::   :::     ::::::::   :::::::\n"\
+":+:        :+:        :+:            :+:    :+:    :+: :+:     :+:    :+: :+:   :+:\n"\
+"+:+        +:+        +:+            +:+          +:+ +:+ +:+  +:+    +:+ +:+  :+:+\n"\
+"+#++:++#   +#++:++#   +#++:++#       +#+        +#+  +#+  +:+   +#++:++#+ +#+ + +:+\n"\
+"+#+        +#+        +#+            +#+      +#+   +#+#+#+#+#+       +#+ +#+#  +#+\n"\
+"#+#        #+#        #+#            #+#     #+#          #+#  #+#    #+# #+#   #+#\n"\
+"########## ########## ##########     ###    ##########    ###   ########   #######\n"\
+"\n"\
+" ::::::::  :::    :::     :::      ::::::::   ::::::::\n"\
+":+:    :+: :+:    :+:   :+: :+:   :+:    :+: :+:    :+:\n"\
+"+:+        +:+    +:+  +:+   +:+  +:+    +:+ +:+\n"\
+"+#+        +#++:++#++ +#++:++#++: +#+    +:+ +#++:++#++\n"\
+"+#+        +#+    +#+ +#+     +#+ +#+    +#+        +#+\n"\
+"#+#    #+# #+#    #+# #+#     #+# #+#    #+# #+#    #+#\n"\
+" ########  ###    ### ###     ###  ########   ########\n"\
+"\n"\
+"Developed by Ngo Minh Hieu - s3940891"\
+"\n"\
+"             Nguyen Ngoc Huan - s3979896"\
+"\n"\
+"             Nguyen Le Thuc Quynh - s3924993"\
+"\n"\
+"             Ngo Duc Minh Quan - s3938194\n"\
+        
+        
 void print_prompt(void) {
     uart_puts("ChaOS> ");
 }
@@ -34,7 +63,7 @@ void print_help_guide(void) {
     uart_puts("\n");
     print_usage("mode");
     print_color("mode ", YELLOW);
-    print_color("cli|text|img|game\n", HI_GREEN);
+    print_color("cli|text|img|vid|game\n", HI_GREEN);
     print_color("Switch runtime mode\n", WHITE);
     uart_puts("\n");
 }
@@ -79,11 +108,14 @@ void print_cmd_not_found(void) {
 
 void print_name(void) {
     framebf_init();
-
+    print_welcome_msg();
 }
 
 void print_image(void) {
     framebf_init();
+    drawImage(hello, 0, 0, 800, 600);
+    wait_msec(300);
+    framebf_clear();
     drawImage(meme, 0, 0, 720, 540);
     drawImage(biome, 720, 0, 720, 540);
     drawImage(meme2, 0, 540, 720, 540);
@@ -98,30 +130,26 @@ void print_image(void) {
     drawString(110, 450, "Group 4", 0xFFFFFFFF, 4);
     drawString(600, 830, "Quan", 0xFFFFFFFF, 2);
     drawString(50, 570, "Who cause the most bugs?", 0x000000000, 3);
+    wait_msec(300);
+    framebf_clear();
+    drawImage(cinema, 0, 0, 800, 600);
+    drawString(300, 100, "Team 4", 0x0000BB00, 2);
+    drawString(150, 130, name_msg1, 0x00AA0000, 2);
+    drawString(150, 160, name_msg2, 0x000000CC, 2);
+    drawString(150, 190, name_msg3, 0x00FF8C00, 2);
+    drawString(150, 220, name_msg4, 0x00F7A189, 2);
+}
+
+void print_name_img(){
+    framebf_init();
+    framebf_clear();
+    drawString(300, 100, "Team 4", 0x0000BB00, 2);
+    drawString(150, 130, name_msg1, 0x00AA0000, 2);
+    drawString(150, 160, name_msg2, 0x000000CC, 2);
+    drawString(150, 190, name_msg3, 0x00FF8C00, 2);
+    drawString(150, 220, name_msg4, 0x00F7A189, 2);
 }
 
 void print_welcome_msg(void) {
-    uart_puts(
-        "\n"\
-        ":::::::::: :::::::::: :::::::::: ::::::::::: ::::::::   :::     ::::::::   :::::::\n"\
-        ":+:        :+:        :+:            :+:    :+:    :+: :+:     :+:    :+: :+:   :+:\n"\
-        "+:+        +:+        +:+            +:+          +:+ +:+ +:+  +:+    +:+ +:+  :+:+\n"\
-        "+#++:++#   +#++:++#   +#++:++#       +#+        +#+  +#+  +:+   +#++:++#+ +#+ + +:+\n"\
-        "+#+        +#+        +#+            +#+      +#+   +#+#+#+#+#+       +#+ +#+#  +#+\n"\
-        "#+#        #+#        #+#            #+#     #+#          #+#  #+#    #+# #+#   #+#\n"\
-        "########## ########## ##########     ###    ##########    ###   ########   #######\n"\
-        "\n"\
-        " ::::::::  :::    :::     :::      ::::::::   ::::::::\n"\
-        ":+:    :+: :+:    :+:   :+: :+:   :+:    :+: :+:    :+:\n"\
-        "+:+        +:+    +:+  +:+   +:+  +:+    +:+ +:+\n"\
-        "+#+        +#++:++#++ +#++:++#++: +#+    +:+ +#++:++#++\n"\
-        "+#+        +#+    +#+ +#+     +#+ +#+    +#+        +#+\n"\
-        "#+#    #+# #+#    #+# #+#     #+# #+#    #+# #+#    #+#\n"\
-        " ########  ###    ### ###     ###  ########   ########\n"\
-        "\n"\
-        "Developed by Ngo Minh Hieu - s3940891\n"
-        "             Nguyen Ngoc Huan - s3979896\n"
-        "             Nguyen Le Thuc Quynh - s3924993\n"
-        "             Ngo Duc Minh Quan - s3938194\n"
-    );
+    uart_puts(Welcome_msg);
 }
