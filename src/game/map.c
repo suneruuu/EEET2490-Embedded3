@@ -1,5 +1,6 @@
 #include "../../includes/framebf.h"
-#include "map.h"
+#include "../../includes/game/map.h"
+#include "../../includes/game/game_logic.h"
 #include "../../assets/images/wall1.c"
 #include "../../assets/images/wall2.c"
 #include "../../assets/images/wall3.c"
@@ -42,7 +43,7 @@ void LoadLevel1(void) {
     char tmp[MAP_HEIGHT][MAP_WIDTH] = {
         "                                ",
         "                                ",
-        "  a b c                  d b e  ",
+        "  abc                    dbe    ",
         "                                ",
         " QWWWWWWWWWWWWWWWWWWWWWWWWWWWWE ",
         " FFFFFFFFFFFFFFRFFFFFFFFFFFFFFF ",
@@ -54,16 +55,16 @@ void LoadLevel1(void) {
         " FFFFFFFFFFFFFFRFFFFFFFFFFFFFFF ",
         " QWWWWWWWWWWWWWWWWWWWWWWWWWWWWE ",
         "                                ",
-        "  g b f                  h b i  ",
         "                                ",
         "                                ",
         "                                ",
         "                                ",
         "                                ",
         "                                ",
+        "hbi                             ",
+        "gbf                             ",
         "                                ",
         "                                ",
-        "                                "
     };
     map_memcpy(map, tmp, sizeof(map));
 }
@@ -74,24 +75,24 @@ void LoadLevel2(void) {
         "                                ",
         "        QWWWWWWWWWWWWWWWWWWWWWE ",
         "        W                     W ",
+        "        W   a                 W ",
         "        W   b                 W ",
+        "        W   c                 W ",
         "        W                     W ",
-        " QWWWWWWW            e        W ",
+        " QWWWWWWW            Z        W ",
         " WFFFFFFF                     W ",
-        " WFFdFFFF      Z              W ",
+        " WFFdFFFF          be         W ",
         " WFFFFFFF                     W ",
         " QWWWWWWWWWWWWWWWWWWWWWWWWWWWWE ",
         "           W                  W ",
-        "    a      W   f              W ",
-        "    b      W   b              W ",
-        "    c      W   g              W ",
+        "           W   g              W ",
+        "           W   b              W ",
+        "           W   f              W ",
         "           W                  W ",
         "           QWWWWWWWWWWWWWWWWWWE ",
-        "                                ",
-        "                                ",
-        "                                ",
-        "                                ",
-        "                                ",
+        "h                               ",
+        "b                               ",
+        "f                               ",
         "                                ",
         "                                "
     };
@@ -162,9 +163,17 @@ void drawMap(void) {
                     break;
 
                 case 'a': //baba text
-                    drawSpriteARGB32Scaled(epd_bitmap_baba, TILE_SIZE, TILE_SIZE,
-                                           TILE_SIZE, TILE_SIZE, x, y);
+                {
+                    // Don't draw BABA sprite if player is at this position
+                    // (player sprite will be drawn instead)
+                    int playerX, playerY;
+                    getPlayerPosition(&playerX, &playerY);
+                    if (x / TILE_SIZE != playerX || y / TILE_SIZE != playerY) {
+                        drawSpriteARGB32Scaled(epd_bitmap_baba, TILE_SIZE, TILE_SIZE,
+                                               TILE_SIZE, TILE_SIZE, x, y);
+                    }
                     break;
+                }
 
                 case 'b': //is text
                     drawSpriteARGB32Scaled(epd_bitmap_is, TILE_SIZE, TILE_SIZE,
@@ -206,6 +215,7 @@ void drawMap(void) {
                                            TILE_SIZE, TILE_SIZE, x, y);
                     break;
 
+
                 default:
                     // empty, skip
                     break;
@@ -216,4 +226,59 @@ void drawMap(void) {
     // UI
     for (int x = 0; x < 800; x++) drawPixelARGB32(x, 550, 0xFFFFFFFF);
     drawString(20, 560, "     WASD: Move | B: Back | Q: Main Menu", 0xFFFFFF, 2);
+    
+    // Clear the rules area first (draw black rectangle)
+    drawRectARGB32(20, 580, 800, 700, 0xFF000000, 1);
+    
+    // Display active rules
+    drawString(20, 580, "Active Rules:", 0xFFFF00, 2);
+    int ruleY = 600;
+    int ruleCount = getRuleCount();
+    
+    for (int i = 0; i < ruleCount && i < 5; i++) {
+        Rule rule = getRule(i);
+        if (rule.valid) {
+            char ruleText[64];
+            char subjectText[16];
+            char objectText[16];
+            
+            // Convert subject to text
+            getObjectTypeText(rule.subject, subjectText);
+            
+            // Convert object to text  
+            getObjectTypeText(rule.object, objectText);
+            
+            if (subjectText[0] != '\0' && objectText[0] != '\0') {
+                // Manual string concatenation without sprintf
+                int pos = 0;
+                
+                // Copy subject text
+                int i = 0;
+                while (subjectText[i] != '\0' && pos < 60) {
+                    ruleText[pos] = subjectText[i];
+                    pos++;
+                    i++;
+                }
+                
+                // Add " IS "
+                ruleText[pos++] = ' ';
+                ruleText[pos++] = 'I';
+                ruleText[pos++] = 'S';
+                ruleText[pos++] = ' ';
+                
+                // Copy object text
+                i = 0;
+                while (objectText[i] != '\0' && pos < 60) {
+                    ruleText[pos] = objectText[i];
+                    pos++;
+                    i++;
+                }
+                
+                ruleText[pos] = '\0';
+                
+                drawString(20, ruleY, ruleText, 0x00FF00, 2);
+                ruleY += 20;
+            }
+        }
+    }
 }

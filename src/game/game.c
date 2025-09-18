@@ -6,8 +6,9 @@
 #include "../../assets/images/mainmenu_bg.c"
 #include "../../assets/images/othermenu_bg.c"
 #include "../../assets/images/levelmenu.c"
-#include "map.h"
-#include "player.h"
+#include "../../includes/game/map.h"
+#include "../../includes/game/player.h"
+#include "../../includes/game/game_logic.h"
 
 typedef enum GameScreen
 {
@@ -192,7 +193,7 @@ void start_game(void)
                 break;
             case 2:
                 LoadLevel2();
-                initPlayer(22,12);
+                initPlayer(22,15);
                 break;
             default:
                 break;
@@ -216,6 +217,31 @@ void start_game(void)
                 else
                 {
                     movePlayer(c);
+                    
+                    // Redraw the map after each move to show changes
+                    drawMap();
+                    drawPlayer();
+                    
+                    // Check win condition
+                    if (isGameWon() == 1) {
+                        ClearScreen();
+                        drawString(300, 250, "YOU WIN!", 0x00FF00, 6);
+                        drawString(250, 300, "Press any key to continue", 0xFFFFFF, 3);
+                        (void)read_key_filtered();
+                        currentScreen = STARTGAME;
+                        break;
+                    }
+                    
+                    // Check lose condition
+                    if (isGameWon() == -1) {
+                        ClearScreen();
+                        drawString(300, 250, "GAME OVER!", 0xFF0000, 6);
+                        drawString(250, 300, "No YOU rule active", 0xFFFFFF, 3);
+                        drawString(250, 330, "Press any key to continue", 0xFFFFFF, 3);
+                        (void)read_key_filtered();
+                        currentScreen = STARTGAME;
+                        break;
+                    }
                 }
             }
         }

@@ -1,7 +1,8 @@
 #include "../../includes/framebf.h"
 #include "../../includes/sprites.h"
-#include "map.h"
-#include "player.h"
+#include "../../includes/game/map.h"
+#include "../../includes/game/player.h"
+#include "../../includes/game/game_logic.h"
 
 static int playerX;
 static int playerY;
@@ -33,6 +34,12 @@ void initPlayer(int startX, int startY) {
     animateFrame = 0;
     animateCounter = 0;
     isMoving = 0;
+    
+    // Initialize game logic
+    initGameLogic();
+    setPlayerPosition(startX, startY);
+    parseRules();
+    
     drawPlayer();
 }
 
@@ -60,30 +67,99 @@ void drawPlayer(void) {
 }
 
 void movePlayer(char input) {
-    int newX = playerX;
-    int newY = playerY;
+    int dirX = 0, dirY = 0;
     isMoving = 0; // reset each frame
 
-    if (input == 'w' || input == 'W') { newY--; lastMove = 'w'; isMoving = 1; }
-    else if (input == 's' || input == 'S') { newY++; lastMove = 's'; isMoving = 1; }
-    else if (input == 'a' || input == 'A') { newX--; lastMove = 'a'; isMoving = 1; }
-    else if (input == 'd' || input == 'D') { newX++; lastMove = 'd'; isMoving = 1; }
+    if (input == 'w' || input == 'W') { dirY = -1; lastMove = 'w'; isMoving = 1; }
+    else if (input == 's' || input == 'S') { dirY = 1; lastMove = 's'; isMoving = 1; }
+    else if (input == 'a' || input == 'A') { dirX = -1; lastMove = 'a'; isMoving = 1; }
+    else if (input == 'd' || input == 'D') { dirX = 1; lastMove = 'd'; isMoving = 1; }
     else {
         // Not a movement key → stay idle
         drawPlayer();
         return;
     }
 
-    // Bounds check (map width 32, height 24)
-    if (newX < 0 || newX >= 32 || newY < 0 || newY >= 24) return;
-
-    // Safety: disallow movement into bottom UI region
-    if (newY >= 21) return;
-
-    char tile = map[newY][newX];
-
-    // Block only solid walls
-    if (tile == 'W') return;
+    // Check if player can move to the new position
+    int newX = playerX + dirX;
+    int newY = playerY + dirY;
+    
+    // Check if movement is allowed
+    if (!canMoveToAsYou(newX, newY)) {
+        char tile = map[newY][newX];
+        
+        // Check if we can push a text block (always pushable)
+        if (isTextBlock(tile)) {
+            // Calculate push destination
+            int pushX = newX + (newX - playerX);
+            int pushY = newY + (newY - playerY);
+            
+            if (canPushTextBlock(newX, newY, pushX, pushY)) {
+                // Push the text block
+                pushObject(newX, newY, pushX, pushY);
+                
+                // Restore the tile we are leaving
+                restoreTile(playerX, playerY);
+                
+                // Update position
+                playerX = newX;
+                playerY = newY;
+                setPlayerPosition(newX, newY);
+                
+                // Animate: flip every 4 moves
+                animateCounter++;
+                if (animateCounter >= 4) {
+                    animateCounter = 0;
+                    animateFrame = (animateFrame + 1) % 2;
+                }
+                
+                // Draw at the new position
+                drawPlayer();
+                
+                // Handle collisions (DEFEAT, SINK)
+                handleCollision(newX, newY);
+                
+                // Update game logic
+                updateGameLogic();
+            }
+        }
+        // Check if we can push an image block (only if rules allow)
+        else if (isImageBlock(tile) && isPushable(newX, newY)) {
+            // Calculate push destination
+            int pushX = newX + (newX - playerX);
+            int pushY = newY + (newY - playerY);
+            
+            if (canPushTextBlock(newX, newY, pushX, pushY)) {
+                // Push the object
+                pushObject(newX, newY, pushX, pushY);
+                
+                // Restore the tile we are leaving
+                restoreTile(playerX, playerY);
+                
+                // Update position
+                playerX = newX;
+                playerY = newY;
+                setPlayerPosition(newX, newY);
+                
+                // Animate: flip every 4 moves
+                animateCounter++;
+                if (animateCounter >= 4) {
+                    animateCounter = 0;
+                    animateFrame = (animateFrame + 1) % 2;
+                }
+                
+                // Draw at the new position
+                drawPlayer();
+                
+                // Handle collisions (DEFEAT, SINK)
+                handleCollision(newX, newY);
+                
+                // Update game logic
+                updateGameLogic();
+            }
+        }
+        return;
+    }
 
     // Restore the tile we are leaving
     restoreTile(playerX, playerY);
@@ -91,6 +167,7 @@ void movePlayer(char input) {
     // Update position
     playerX = newX;
     playerY = newY;
+    setPlayerPosition(newX, newY);
 
     // Animate: flip every 4 moves
     animateCounter++;
@@ -101,4 +178,10 @@ void movePlayer(char input) {
 
     // Draw at the new position
     drawPlayer();
+    
+    // Handle collisions (DEFEAT, SINK)
+    handleCollision(newX, newY);
+    
+    // Update game logic
+    updateGameLogic();
 }

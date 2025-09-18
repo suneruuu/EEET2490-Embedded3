@@ -55,7 +55,7 @@ game: clean uart1_build game.img run_game
 
 GAME_ASSET_OFILES = $(GAME_ASSETS:./assets/images/%.c=./build/assets/%.o)
 
-game.img: ./build/boot.o ./build/uart.o ./build/game_main.o ./build/game.o ./build/framebf.o ./build/mbox.o ./build/game/map.o ./build/game/player.o ./build/game/sprites.o ./build/utils/string.o
+game.img: ./build/boot.o ./build/uart.o ./build/game_main.o ./build/game.o ./build/framebf.o ./build/mbox.o ./build/game/map.o ./build/game/player.o ./build/game/sprites.o ./build/game/game_logic.o ./build/utils/string.o
 	$(LD) -nostdlib $^ -T ./src/link.ld -o ./build/game.elf
 	$(OBJCOPY) -O binary ./build/game.elf ./build/game.img
 
@@ -94,6 +94,10 @@ uart0_build: ./library/peripheral/uart0.c
 	$(CC) $(GCCFLAGS) -c $< -o $@
 
 ./build/game/sprites.o: ./src/game/sprites.c
+	@$(MKDIR)
+	$(CC) $(GCCFLAGS) -c $< -o $@
+
+./build/game/game_logic.o: ./src/game/game_logic.c
 	@$(MKDIR)
 	$(CC) $(GCCFLAGS) -c $< -o $@
 
