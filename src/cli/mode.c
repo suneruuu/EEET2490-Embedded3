@@ -239,8 +239,9 @@ void handle_vid_mode(void) {
 
 void handle_text_mode(void) {
     framebf_init();
-    drawString(100, 100, "Welcome to ChaOS! Type 'help' for commands", 0x00F7A189, 3);
-    drawString(200, 200, Welcome_msg, 0x00F7A189, 2);
+    //drawString(300, 100, "Welcome to ChaOS! Type 'help' for commands", 0x00F7A189, 1);
+    //drawString(400, 200, Welcome_msg, 0x00F7A189, 1);
+    print_name_img();
 }
 
 void handle_game_mode(void) {
