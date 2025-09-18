@@ -9,6 +9,7 @@
 #include "includes/video_player.h"
 #include "includes/video_data.h"
 #include "includes/timer.h"
+#include "assets/images/hello.c"
 
 static Mode current_mode = MODE_CLI;
 
@@ -213,7 +214,7 @@ void handle_vid_mode(void) {
 
 void handle_text_mode(void) {
     framebf_init();
-    print_name();
+    // print_name();
     print_image();
 }
 
@@ -223,7 +224,7 @@ void handle_game_mode(void) {
 
 void handle_img_mode(void) {
     framebf_init();
-    print_image();
+    drawImage(hello, 0, 0, 800, 600);
 }
 
 /* ---- Mode changing ---- */
