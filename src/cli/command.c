@@ -109,8 +109,12 @@ void mode_cmd(char *arg) {
         chmod_to_game_mode();
         uart_puts("Switched to Game mode\n");
         start_game();
+    } else if (strcmp(arg, "vid") == 0) {
+        chmod_to_vid_mode();
+        uart_puts("Switched to Video mode\n");
+        handle_vid_mode();
     } else {
-        uart_puts("Usage: mode cli|text|img|game\n");
+        uart_puts("Usage: mode cli|text|img|game|vid\n");
     }
 }
 

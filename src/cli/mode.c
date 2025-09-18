@@ -6,6 +6,9 @@
 #include "includes/peripheral/uart0.h"
 #include "includes/utils/color.h"
 #include "includes/framebf.h"
+#include "includes/video_player.h"
+#include "includes/video_data.h"
+#include "includes/timer.h"
 
 static Mode current_mode = MODE_CLI;
 
@@ -184,7 +187,28 @@ void handle_cli_mode(void) {
 }
 
 void handle_vid_mode(void) {
-    // TODO: implement Video mode loop / logic
+    // Initialize framebuffer
+    framebf_init();
+    
+    // Play the video once and then return to CLI mode
+    uart_puts("Video mode: Playing video...\n");
+    uart_puts("Press any key to return to CLI mode\n");
+    
+    video_play_init();
+    video_play_fill_center_quad();
+    
+    // Wait for any key press to return to CLI mode
+    while (1) {
+        KeyEvent ev;
+        read_key_event(&ev);
+        if (ev.type == KEY_CHAR || ev.type == KEY_ENTER) {
+            break;
+        }
+    }
+    
+    // Return to CLI mode
+    chmod_to_cli_mode();
+    uart_puts("Returned to CLI mode\n");
 }
 
 void handle_text_mode(void) {

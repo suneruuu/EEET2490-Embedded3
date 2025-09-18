@@ -9,8 +9,8 @@
 
 void main()
 {
-
     // enter CLI
+    print_welcome_msg();
     chmod_to_cli_mode();
     handle_cli_mode();
 }
