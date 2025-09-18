@@ -7,9 +7,11 @@
 #include "includes/framebf.h"
 #include "includes/color.h"
 
-void main()
+void main(void)
 {
-    // enter CLI
+    // Initialize framebuffer
+    framebf_init();
+    // Enter CLI on UART
     print_welcome_msg();
     chmod_to_cli_mode();
     handle_cli_mode();
