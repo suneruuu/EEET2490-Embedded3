@@ -117,11 +117,6 @@ void print_image(void) {
     wait_msec(300);
     framebf_clear();
     drawImage(meme, 0, 0, 720, 540);
-    drawString(40, 790, "Huan", 0xFFFFFFFF, 2);
-    drawString(315, 780, "Hieu", 0xFFFFFFFF, 2);
-    drawString(1190, 200, "Quynh", 0xFFFFFFFF, 2);
-    drawString(1275, 160, "BUGS", 0xFFFFFFFF, 2);
-    drawString(1260, 140, "LOT OF", 0xFFFFFFFF, 2);
     wait_msec(300);
     framebf_clear();
     drawImage(biome, 0, 0, 720, 540);
@@ -130,21 +125,6 @@ void print_image(void) {
     drawImage(meme2, 0, 0, 720, 540);
     wait_msec(300);
     framebf_clear();
-    // 
-    // drawString(830, 50, "The", 0xFFFFFFFF, 3);
-    // drawString(820, 80, "Game", 0xFFFFFFFF, 3);
-    // drawString(500, 350, "Deadline", 0x00000000, 3);
-    // drawString(110, 450, "Group 4", 0xFFFFFFFF, 4);
-    // drawString(600, 830, "Quan", 0xFFFFFFFF, 2);
-    // drawString(50, 570, "Who cause the most bugs?", 0x000000000, 3);
-    // wait_msec(300);
-    // framebf_clear();
-    // drawImage(cinema, 0, 0, 800, 600);
-    // drawString(300, 100, "Team 4", 0x0000BB00, 2);
-    // drawString(150, 130, name_msg1, 0x00AA0000, 2);
-    // drawString(150, 160, name_msg2, 0x000000CC, 2);
-    // drawString(150, 190, name_msg3, 0x00FF8C00, 2);
-    // drawString(150, 220, name_msg4, 0x00F7A189, 2);
 }
 
 void print_name_img(){
