@@ -75,8 +75,7 @@ drawString(150, 130, name_msg1, 0x00AA0000, 2);
 drawString(150, 160, name_msg2, 0x000000CC, 2);
 drawString(150, 190, name_msg3, 0x00FF8C00, 2);
 drawString(150, 220, name_msg4, 0x00F7A189, 2);
-wait_msec(3000);
-ClearScreen();
+
 
 // echo everything back
 while(1) {
