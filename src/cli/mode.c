@@ -214,7 +214,6 @@ void handle_vid_mode(void) {
 void handle_text_mode(void) {
     framebf_init();
     print_name();
-    print_image();
 }
 
 void handle_game_mode(void) {
