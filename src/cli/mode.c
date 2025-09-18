@@ -212,8 +212,8 @@ void handle_vid_mode(void) {
 }
 
 void handle_text_mode(void) {
-    uart_init();
-    print_welcome_msg();
+    framebf_init();
+    drawString(100, 100, "Welcome to ChaOS! Type 'help' for commands", 0x00F7A189, 3);
 }
 
 void handle_game_mode(void) {
