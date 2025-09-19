@@ -233,8 +233,8 @@ void start_game(void)
                     // Check win condition
                     if (isGameWon() == 1) {
                         ClearScreen();
-                        drawString(300, 250, "YOU WIN!", 0x00FF00, 6);
-                        drawString(250, 300, "Press any key to continue", 0xFFFFFF, 3);
+                        drawString(300, 250, "YOU WIN!", 0x00FF00, 3);
+                        drawString(200, 300, "Press any key to continue", 0xFFFFFF, 2);
                         (void)read_key_filtered();
                         currentScreen = STARTGAME;
                         break;
