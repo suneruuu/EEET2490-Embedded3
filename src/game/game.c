@@ -9,6 +9,8 @@
 #include "../../includes/game/map.h"
 #include "../../includes/game/player.h"
 #include "../../includes/game/game_logic.h"
+#include "../../includes/timer.h"
+#include "../../includes/game/logger.h"
 
 typedef enum GameScreen
 {
@@ -96,9 +98,10 @@ static void PrintCredits(void)
 }
 
 void start_game(void)
-{
+{   
+    initLogger();
     framebf_init();
-
+    initTimer();
     GameScreen currentScreen = MAIN_MENU;
     int currentLevel = 0;
 
@@ -111,6 +114,7 @@ void start_game(void)
             for (;;)
             {
                 char choice = read_key_filtered();
+                logCommand(choice);
                 if (choice == '1')
                 {
                     currentScreen = STARTGAME;
@@ -160,6 +164,7 @@ void start_game(void)
             for (;;)
             {
                 char level_choice = read_key_filtered();
+                logCommand(level_choice);
                 if (level_choice == '1')
                 {
                     currentLevel = 1;
@@ -173,7 +178,8 @@ void start_game(void)
                     break;
                 }
                 else if (level_choice == 'q' || level_choice == 'Q')
-                {
+                {   
+                    printLogSummary();
                     currentScreen = MAIN_MENU;
                     break;
                 }
@@ -204,8 +210,10 @@ void start_game(void)
             for (;;)
             {
                 char c = read_key_filtered();
+                logCommand(c);
                 if (c == 'Q' || c == 'q')
                 { // back to main
+                    printLogSummary();
                     currentScreen = MAIN_MENU;
                     break;
                 }
@@ -217,7 +225,7 @@ void start_game(void)
                 else
                 {
                     movePlayer(c);
-                    
+
                     // Redraw the map after each move to show changes
                     drawMap();
                     drawPlayer();
