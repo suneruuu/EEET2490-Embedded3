@@ -85,9 +85,6 @@ void video_blit_scaled_frame_index(int idx, int x, int y, int dst_w, int dst_h){
 /* ---- API ---- */
 void video_play_init(void){
   if(!fb || width==0u || height==0u || pitch==0u) framebf_init();
-  
-  // Call the new function to play the video in the center of the 800x600 screen
-  video_play_fill_center_quad();
 }
 
 /* ---- Function to center the video on 800x600 screen ---- */
