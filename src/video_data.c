@@ -1,7 +1,7 @@
 #include "..\includes\video_data.h"
 
 // Flattened frames: VIDEO_FRAME_COUNT x (VIDEO_WIDTH*VIDEO_HEIGHT)
-const uint16_t video_frames[VIDEO_FRAME_COUNT * VIDEO_WIDTH * VIDEO_HEIGHT] = {
+const uint16_t video_frames [VIDEO_FRAME_COUNT * VIDEO_WIDTH * VIDEO_HEIGHT] = {
   
   0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
   0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
