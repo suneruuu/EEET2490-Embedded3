@@ -1,6 +1,7 @@
 #include "../../includes/framebf.h"
 #include "../../includes/game/map.h"
 #include "../../includes/game/game_logic.h"
+#include "../../includes/timer.h"
 #include "../../assets/images/wall1.c"
 #include "../../assets/images/wall2.c"
 #include "../../assets/images/wall3.c"
@@ -38,6 +39,43 @@ void *memset(void *s, int c, unsigned long n) {
 }
 
 char map[24][32]; // accessible from player.c
+static char stepBuf[32];
+static char timeBuf[32];
+
+// Convert integer to decimal string (safe even if no font for digits)
+static void intToStr(int value, char *buf) {
+    if (value == 0) {
+        buf[0] = '0';
+        buf[1] = '\0';
+        return;
+    }
+    char tmp[16];
+    int i = 0;
+    while (value > 0) {
+        tmp[i++] = '0' + (value % 10);
+        value /= 10;
+    }
+    // reverse into buf
+    int j = 0;
+    while (i > 0) {
+        buf[j++] = tmp[--i];
+    }
+    buf[j] = '\0';
+}
+
+void drawHUD(void) {
+    // Steps
+    intToStr(getStepCounter(), stepBuf);
+    drawRectARGB32(0, 0, 799, 24, 0xFF000000, 1); // clear top HUD bar
+    drawString(10, 5, "Steps:", 0xFFFFFFFF, 2);
+    drawString(100, 5, stepBuf, 0xFFFFFFFF, 2);
+
+    // Time
+    intToStr(getElapsedSeconds(), timeBuf);
+    drawString(200, 5, "Time:", 0xFFFFFFFF, 2);
+    drawString(280, 5, timeBuf, 0xFFFFFFFF, 2);
+}
+
 
 void LoadLevel1(void) {
     char tmp[MAP_HEIGHT][MAP_WIDTH] = {
@@ -67,6 +105,7 @@ void LoadLevel1(void) {
         "                                ",
     };
     map_memcpy(map, tmp, sizeof(map));
+    resetTimer();
 }
 
 void LoadLevel2(void) {
@@ -97,6 +136,7 @@ void LoadLevel2(void) {
         "                                "
     };
     map_memcpy(map, tmp, sizeof(map));
+    resetTimer();
 }
 
 void drawSpriteARGB32Scaled(const unsigned long *sprite, int srcW, int srcH,
@@ -226,7 +266,9 @@ void drawMap(void) {
     // UI
     for (int x = 0; x < 800; x++) drawPixelARGB32(x, 550, 0xFFFFFFFF);
     drawString(20, 560, "     WASD: Move | B: Back | Q: Main Menu", 0xFFFFFF, 2);
-    
+
+    drawHUD();
+
     // Clear the rules area first (draw black rectangle)
     drawRectARGB32(20, 580, 800, 700, 0xFF000000, 1);
     

@@ -9,7 +9,8 @@ static int playerY;
 static char lastMove = 's';
 static int animateFrame = 0;
 static int animateCounter = 0;
-static int isMoving = 0;  
+static int isMoving = 0; 
+static int stepCounter = 0; 
 
 void drawPlayer(void);
 
@@ -34,6 +35,7 @@ void initPlayer(int startX, int startY) {
     animateFrame = 0;
     animateCounter = 0;
     isMoving = 0;
+    stepCounter = 0;
     
     // Initialize game logic
     initGameLogic();
@@ -100,7 +102,7 @@ void movePlayer(char input) {
                 
                 // Restore the tile we are leaving
                 restoreTile(playerX, playerY);
-                
+                restoreTile(newX, newY);
                 // Update position
                 playerX = newX;
                 playerY = newY;
@@ -121,6 +123,8 @@ void movePlayer(char input) {
                 
                 // Update game logic
                 updateGameLogic();
+
+                stepCounter++; // Increment step counter
             }
         }
         // Check if we can push an image block (only if rules allow)
@@ -135,7 +139,7 @@ void movePlayer(char input) {
                 
                 // Restore the tile we are leaving
                 restoreTile(playerX, playerY);
-                
+                restoreTile(newX, newY);
                 // Update position
                 playerX = newX;
                 playerY = newY;
@@ -156,6 +160,7 @@ void movePlayer(char input) {
                 
                 // Update game logic
                 updateGameLogic();
+                stepCounter++; // Increment step counter
             }
         }
         return;
@@ -163,7 +168,7 @@ void movePlayer(char input) {
 
     // Restore the tile we are leaving
     restoreTile(playerX, playerY);
-
+    restoreTile(newX, newY);
     // Update position
     playerX = newX;
     playerY = newY;
@@ -184,4 +189,9 @@ void movePlayer(char input) {
     
     // Update game logic
     updateGameLogic();
+    stepCounter++; // Increment step counter
 }
+int getStepCounter(void) {
+    return stepCounter;
+}
+

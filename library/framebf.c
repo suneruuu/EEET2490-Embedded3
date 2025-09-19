@@ -23,12 +23,12 @@ void framebf_init()
  mBuf[3] = 8; // Value size in bytes
  mBuf[4] = 0; // REQUEST CODE = 0
  mBuf[5] = 800; // Value(width)
- mBuf[6] = 600; // Value(height)
+ mBuf[6] = 800; // Value(height)
  mBuf[7] = MBOX_TAG_SETVIRTWH; //Set virtual width-height
  mBuf[8] = 8;
  mBuf[9] = 0;
  mBuf[10] = 800;
- mBuf[11] = 600;
+ mBuf[11] = 800;
  mBuf[12] = MBOX_TAG_SETVIRTOFF; //Set virtual offset
  mBuf[13] = 8;
  mBuf[14] = 0;

@@ -1,4 +1,32 @@
 /* Functions to delay, set/wait timer */
+// timer.c
+static unsigned long freq = 0;
+static unsigned long startTick = 0;
+
+void initTimer() {
+    // read counter frequency (Hz)
+    asm volatile("mrs %0, cntfrq_el0" : "=r"(freq));
+    // read current tick as start point
+    asm volatile("mrs %0, cntpct_el0" : "=r"(startTick));
+}
+
+// call this to reset timer at new level/start
+void resetTimer() {
+    asm volatile("mrs %0, cntpct_el0" : "=r"(startTick));
+}
+
+// returns elapsed time in whole seconds
+int getElapsedSeconds() {
+    unsigned long now;
+    asm volatile("mrs %0, cntpct_el0" : "=r"(now));
+    unsigned long delta = now - startTick;
+    if (freq == 0) {
+        // try to read freq if not set
+        asm volatile("mrs %0, cntfrq_el0" : "=r"(freq));
+        if (freq == 0) return 0;
+    }
+    return (int)(delta / freq);
+}
 
 void wait_msec(unsigned int n)
 {
